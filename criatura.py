@@ -10,13 +10,13 @@ class Criatura:
 
     def move_left(self):
         
-        if self.rect.x > -24: 
+        if self.rect.x > -20: 
             self.rect.x -= self.velocidade
         
 
     def move_right(self):
         
-        if self.rect.x < 896:
+        if self.rect.x < 1380:
             self.rect.x += self.velocidade 
     
 

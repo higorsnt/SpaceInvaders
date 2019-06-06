@@ -1,5 +1,6 @@
 # coding: utf-8
 from criatura import Criatura
+from random import choice
 import pygame
 import os
 
@@ -8,15 +9,19 @@ pygame.init()
 
 # Definindo os caminhos dos arquivos necessários para o jogo
 DIRETORIO = os.getcwd()
+Largura_tela = 1500
+Altura_tela = 1000 
+JANELA = pygame.display.set_mode((Largura_tela, Altura_tela))
+pygame.display.set_caption("Space Invaders")
 
 # Criando um objeto do tipo pygame.font.Font, onde é passada a fonte e o tamanho
 # se a fonte for passada como None é utilizada a padrão do sistema.
 FONTE = pygame.font.Font(DIRETORIO + "/fonts/space_invaders.ttf", 60) 
-
 BACKGROUND = pygame.image.load(DIRETORIO + "/images/background.jpg")
-TANQUE = Criatura(pygame.image.load(DIRETORIO + "/images/tank.png"), 436, 590)
+sprite_tanque = pygame.transform.scale(pygame.image.load(DIRETORIO + "/images/tank.png"), (150,150) )
+TANQUE = Criatura(sprite_tanque, (Largura_tela - 140) / 2, (Altura_tela - 120))
 CLOCK = pygame.time.Clock()
-MATRIX_DE_INIMIGOS = [[],[],[],[]]
+MATRIX_DE_INIMIGOS = [[],[],[],[],[]]
 
 # Definido cores
 VERDE = (0, 255, 0)
@@ -26,9 +31,7 @@ Comando que cria um objeto do tipo Surface e permite criar a janela do jogo.
 Seu parâmetro é uma tupla (podendo ser uma lista) que indica a largura e a altura,
 respectivamente, em pixels.
 """
-JANELA = pygame.display.set_mode((1000, 700))
-# Colocando um nome para a janela criada
-pygame.display.set_caption("Space Invaders")
+
 
 
 """
@@ -42,19 +45,36 @@ JANELA.blit(texto, [220, 50])
 
 def inicia_inimigos():
     x = y = 0
-    for linha in MATRIX_DE_INIMIGOS:
+    inimigosA = []
+    inimigosB = []
+
+    for i in xrange(1, 4):
+        inimigosA.append(pygame.image.load(DIRETORIO + ("/images/inimigos/alien%d.png" % i)))
+        inimigosB.append(pygame.image.load(DIRETORIO + ("/images/inimigos/alien%d.png" % (i+3))))
+
+    for j in xrange(len(MATRIX_DE_INIMIGOS)):
+        linha = MATRIX_DE_INIMIGOS[j]
         
-        for i in xrange(6):
-            linha.append(Criatura(pygame.image.load(DIRETORIO + "/images/Ship.png"), x, y))
+        for i in xrange(8):
+
+            if (j % 2):
+                sprite = pygame.transform.scale(choice(inimigosA), (100, 90))
+                linha.append(Criatura(sprite, x, y))
+            
+            else:
+                sprite = pygame.transform.scale(choice(inimigosB), (85, 85))
+                linha.append(Criatura(sprite, x, y))
+            
             x += 100
         
-        y += 50
+        y += 80
         x = 0
 
 def exibe_inimigos():
     for linha in MATRIX_DE_INIMIGOS:
         for inimigo in linha:
             JANELA.blit(inimigo.sprite, inimigo.rect)
+
 
 
 def game():
@@ -84,8 +104,11 @@ def game():
         JANELA.fill((0,255,0))
         exibe_inimigos()
         JANELA.blit(TANQUE.sprite, TANQUE.rect)
+        print TANQUE.rect
         pygame.display.update()
         CLOCK.tick(60)
 
     # Comando que encerra os módulos do Pygame
     pygame.quit()
+
+game()
