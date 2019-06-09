@@ -29,6 +29,7 @@ class SpaceInvaders():
         self.VERMELHO = (255, 0, 0)
         self.VERDE = (0, 255, 0)
         self.AZUL = (0, 0, 255)
+        self.CINZA = (0,128,128)
     
     def tela_inicial(self):
         """
@@ -39,17 +40,17 @@ class SpaceInvaders():
         menu = True
 
 
-        musica_menu = pygame.mixer.Sound(self.DIRETORIO + "/sound/menu.wav")
+        musica_menu = pygame.mixer.Sound(self.DIRETORIO + "/sounds/menu.wav")
         musica_menu.play(-1)
 
         self.JANELA.fill( (0,0,0) )
         texto = self.FONTE.render("SPACE INVADERS", True, self.VERDE)
         self.JANELA.blit(texto, [220, 50])
         self.FONTE = pygame.font.Font(self.DIRETORIO + "/fonts/space_invaders.ttf", 30) 
-        comando1 = self.FONTE.render("Para INICIAR o jogo digite I", True, self.VERDE)
-        comando2 = self.FONTE.render("Para SAIR do jogo digite S", True, self.VERDE)
+        comando1 = self.FONTE.render(" Para INICIAR o jogo digite I", True, self.BRANCO, self.AZUL)
+        comando2 = self.FONTE.render(" Para SAIR do jogo digite S  ", True, self.BRANCO, self.AZUL)
         self.JANELA.blit(comando1, (220, 550))
-        self.JANELA.blit(comando2, (220, 590))
+        self.JANELA.blit(comando2, (220, 600))
         pygame.display.update()
 
 
@@ -64,9 +65,20 @@ class SpaceInvaders():
         
         while menu:
             for event in pygame.event.get():
+                print pygame.mouse.get_pos()
                 if event.type == pygame.QUIT:
                     musica_menu.stop()
                     return False
+                
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = pygame.mouse.get_pos()
+                    if (x >= 220 and y >= 550) and (x <= 750 and y <= 590):
+                        self.inicia_inimigos()
+                        musica_menu.stop()
+                        return True
+                    if (x >= 220 and y >= 600) and (x <= 743 and y <= 643):
+                        musica_menu.stop()
+                        return False
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_i:
