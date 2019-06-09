@@ -43,9 +43,16 @@ class SpaceInvaders():
         musica_menu.play(-1)
 
         self.JANELA.fill( (0,0,0) )
-        texto = self.FONTE.render("SPACE INVADERS", True, self.VERDE, None)
+        texto = self.FONTE.render("SPACE INVADERS", True, self.VERDE)
         self.JANELA.blit(texto, [220, 50])
+        self.FONTE = pygame.font.Font(self.DIRETORIO + "/fonts/space_invaders.ttf", 30) 
+        comando1 = self.FONTE.render("Para INICIAR o jogo digite I", True, self.VERDE)
+        comando2 = self.FONTE.render("Para SAIR do jogo digite S", True, self.VERDE)
+        self.JANELA.blit(comando1, (220, 550))
+        self.JANELA.blit(comando2, (220, 590))
         pygame.display.update()
+
+
         '''
         inimigo1 = pygame.image.load(self.DIRETORIO + "/images/enemies/alien1.png")
         inimigo2 = pygame.image.load(self.DIRETORIO + "/images/enemies/alien4.png")
@@ -57,6 +64,10 @@ class SpaceInvaders():
         
         while menu:
             for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    musica_menu.stop()
+                    return False
+
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_i:
                         self.inicia_inimigos()
