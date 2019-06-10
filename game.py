@@ -9,8 +9,8 @@ class SpaceInvaders():
         # Definindo os caminhos dos arquivos necessários para o jogo
         self.DIRETORIO = os.getcwd()
 
-        self.LARGURA_TELA = 1000
-        self.ALTURA_TELA = 700 
+        self.LARGURA_TELA = 1500
+        self.ALTURA_TELA = 1000 
         self.JANELA = pygame.display.set_mode((self.LARGURA_TELA, self.ALTURA_TELA))
         pygame.display.set_caption("Space Invaders")
 
@@ -45,12 +45,12 @@ class SpaceInvaders():
 
         self.JANELA.fill( (0,0,0) )
         texto = self.FONTE.render("SPACE INVADERS", True, self.VERDE)
-        self.JANELA.blit(texto, [220, 50])
+        self.JANELA.blit(texto, [(self.LARGURA_TELA - 550) / 2, 0])
         self.FONTE = pygame.font.Font(self.DIRETORIO + "/fonts/space_invaders.ttf", 30) 
         comando1 = self.FONTE.render(" Para INICIAR o jogo digite I", True, self.BRANCO, self.AZUL)
-        comando2 = self.FONTE.render(" Para SAIR do jogo digite S  ", True, self.BRANCO, self.AZUL)
-        self.JANELA.blit(comando1, (220, 550))
-        self.JANELA.blit(comando2, (220, 600))
+        comando2 = self.FONTE.render(" Para SAIR do jogo digite S   ", True, self.BRANCO, self.AZUL)
+        self.JANELA.blit(comando1, ((self.LARGURA_TELA - 550) / 2, self.ALTURA_TELA - 100))
+        self.JANELA.blit(comando2, ((self.LARGURA_TELA - 550) / 2, self.ALTURA_TELA - 50))
         pygame.display.update()
 
 
@@ -65,7 +65,6 @@ class SpaceInvaders():
         
         while menu:
             for event in pygame.event.get():
-                print pygame.mouse.get_pos()
                 if event.type == pygame.QUIT:
                     musica_menu.stop()
                     return False
