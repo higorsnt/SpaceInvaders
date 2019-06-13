@@ -1,2 +1,0 @@
-import game
-game.game()

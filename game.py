@@ -33,7 +33,7 @@ class Criatura:
 
     def shot(self):
         projetil = Projetil(self.rect.x + 30, self.rect.y, 1)
-        
+
         return projetil
 
     def move_down(self):
@@ -59,7 +59,7 @@ class SpaceInvaders():
     def __init__(self):
         # Definindo os caminhos dos arquivos necessários para o jogo
         self.DIRETORIO = os.getcwd()
-        self.bullet = None
+        self.TIRO = None
         self.LARGURA_TELA = 1200
         self.ALTURA_TELA = 900
         self.LIMITE_ESQUERDO = 10
@@ -80,6 +80,7 @@ class SpaceInvaders():
             self.SPRITE_NAVE, (self.LARGURA_TELA - 140) / 2, (self.ALTURA_TELA - 100))
         self.CLOCK = pygame.time.Clock()
         self.MATRIZ_DE_INIMIGOS = [[], [], [], [], []]
+        self.LINHA_DE_TIRO = self.MATRIZ_DE_INIMIGOS[-1]
 
     def tela_inicial(self):
         """
@@ -95,28 +96,12 @@ class SpaceInvaders():
         self.JANELA.fill((0, 0, 0))
         texto = self.FONTE.render("SPACE INVADERS", True, VERDE)
         self.JANELA.blit(texto, [(self.LARGURA_TELA - 550) / 2, 0])
-        self.FONTE = pygame.font.Font(
-            self.DIRETORIO + "/fonts/space_invaders.ttf", 30)
-        comando1 = self.FONTE.render(
-            " Para INICIAR o jogo digite I", True, BRANCO, AZUL)
-        comando2 = self.FONTE.render(
-            " Para SAIR do jogo digite S   ", True, BRANCO, AZUL)
-        self.JANELA.blit(
-            comando1, ((self.LARGURA_TELA - 550) / 2, self.ALTURA_TELA - 100))
-        self.JANELA.blit(
-            comando2, ((self.LARGURA_TELA - 550) / 2, self.ALTURA_TELA - 50))
+        self.FONTE = pygame.font.Font(self.DIRETORIO + "/fonts/space_invaders.ttf", 30)
+        comando1 = self.FONTE.render(" Para INICIAR o jogo digite I", True, BRANCO, AZUL)
+        comando2 = self.FONTE.render(" Para SAIR do jogo digite S   ", True, BRANCO, AZUL)
+        self.JANELA.blit(comando1, ((self.LARGURA_TELA - 550) / 2, self.ALTURA_TELA - 100))
+        self.JANELA.blit(comando2, ((self.LARGURA_TELA - 550) / 2, self.ALTURA_TELA - 50))
         pygame.display.update()
-
-        '''
-        inimigo1 = pygame.image.load(
-            self.DIRETORIO + "/images/enemies/alien1.png")
-        inimigo2 = pygame.image.load(
-            self.DIRETORIO + "/images/enemies/alien4.png")
-        # inimigo1_texto = self.FONTE.render(" = X pts", )
-        # inimigo2_texto = self.FONTE.render(" = X pts", True, self.VERMELHO, None)
-        # self.JANELA.blit(inimigo1_texto, [200,150])
-        inimigo1 = pygame.transform.scale(inimigo1, (100, 90))
-        self.JANELA.blit(inimigo1, (100, 200))'''
 
         while menu:
             for event in pygame.event.get():
@@ -178,15 +163,14 @@ class SpaceInvaders():
         self.JANELA.blit(self.NAVE.sprite, self.NAVE.rect)
         self.CLOCK.tick(60)
 
-        if self.bullet != None: 
-            self.bullet.draw(self.JANELA)
-            if self.bullet.pos_y < 0:
-                self.bullet = None
-        
+        if self.TIRO is not None:
+            pass
+            #TODO
+
         pygame.display.update()
 
     def main(self):
-        # Variável necessária para que o loop onde o jogo ocorre dure o tempo necessário
+        # Variável necessária para que o loop onde o jogo ocorre dure o tempo necessário.
         run = True
         menu = True
 
@@ -200,26 +184,26 @@ class SpaceInvaders():
                     self.inicia_inimigos()
                 else:
                     run = False
+
             else:
                 # Coletando os eventos que o usuário está realizando
-                
+
                 for event in pygame.event.get():
-                    # Verificando se o usuário clicou na opção de fechar a janela
+                    # Verificando se o usuário clicou na opção de fechar a janela.
                     if event.type == pygame.QUIT:
                         run = False
 
                     # Verificando se o usuário pressionou em alguma tecla.
                     if event.type == pygame.KEYDOWN:
 
-                        if (event.key == pygame.K_UP and self.bullet == None):
-                            self.bullet = self.NAVE.shot()
-                            
+                        if ((event.key == pygame.K_UP or event.key == pygame.K_SPACE) and self.TIRO == None):
+                            self.TIRO = self.NAVE.shot()
 
-                        # Se a tecla pressionada for a seta para direita, move a TANQUE para a direita.
+                        # Se a tecla pressionada for a seta para direita, move a NAVE para a direita.
                         if event.key == pygame.K_RIGHT:
                             self.NAVE.move_right()
 
-                        # Se a tecla pressionada for a seta para esquerda, move a TANQUE para a esquerda.
+                        # Se a tecla pressionada for a seta para esquerda, move a NAVE para a esquerda.
                         elif event.key == pygame.K_LEFT:
                             self.NAVE.move_left()
 
