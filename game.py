@@ -32,14 +32,13 @@ class Criatura:
             self.rect.x += self.velocidade
 
     def shot(self):
-        projetil = Projetil(self.rect.x + 30, self.rect.y, 1)
-
+        projetil = Projetil(self.rect.x + self.rect.width / 2, self.rect.y, 1)
         return projetil
 
     def move_down(self):
         pass
-
-
+    
+    
 class Projetil():
 
     def __init__(self, pos_x, pos_y, direcao, color=BRANCO):
@@ -162,22 +161,34 @@ class SpaceInvaders():
         self.exibe_inimigos()
         self.JANELA.blit(self.NAVE.sprite, self.NAVE.rect)
         self.CLOCK.tick(60)
-
+        
         if self.TIRO is not None:
-            pass
-            #TODO
+            
+            self.TIRO.draw(self.JANELA)
+            for i in xrange(len(self.LINHA_DE_TIRO)):
+                inimigo = self.LINHA_DE_TIRO[i]
+                limite_x, limite_y = inimigo.rect.bottomleft
+                largura_inimigo = inimigo.rect.width
+                if ( self.TIRO.pos_x >= limite_x and self.TIRO.pos_x <= limite_x + largura_inimigo):
 
+                    if (self.TIRO.pos_y <= limite_y):
+                        #self.LINHA_DE_TIRO[i].sprite = pygame.transform.scale(pygame.image.load(self.DIRETORIO + "/images/Ship.png" ), (50,50))
+                        self.TIRO = None
+                        break
+                
+            if (self.TIRO is not None and self.TIRO.pos_y < 0):
+                self.TIRO = None
+
+        self.exibe_inimigos()
         pygame.display.update()
 
     def main(self):
         # Variável necessária para que o loop onde o jogo ocorre dure o tempo necessário.
         run = True
         menu = True
-
         while run:
 
             if menu:
-
                 comando = self.tela_inicial()
                 if comando:
                     menu = False
@@ -209,7 +220,6 @@ class SpaceInvaders():
 
                 self.update()
                 # print (self.NAVE.rect.left), (self.NAVE.rect.right)
-
 
 if __name__ == "__main__":
     # Comando necessário para se inicializar os módulos do Pygame
