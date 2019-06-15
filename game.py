@@ -1,7 +1,7 @@
 # coding: utf-8
 from random import shuffle
+from math import ceil
 import pygame
-import math
 import os
 
 AZUL = (0, 0, 255)
@@ -10,9 +10,22 @@ VERMELHO = (255, 0, 0)
 PRETO = (0, 0, 0)
 VERDE = (0, 255, 0)
 CINZA = (0, 128, 128)
-DIRECAO = {1:"DIREITA", -1:"ESQUERDA"}
+DIRECAO = {"D":1,"E":-1}
 LARGURA_TELA = 800
 ALTURA_TELA = 600
+
+class Borda(pygame.sprite.Sprite):
+    def __init__(self, x, y, a, b):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface( (x, y) )
+        self.image.fill(BRANCO)
+        self.rect = self.image.get_rect()
+        self.rect.x = a
+        self.rect.y = b
+    
+BORDA_ESQUERDA = pygame.sprite.GroupSingle(Borda(5,ALTURA_TELA, 0, 0))
+BORDA_DIREITA = pygame.sprite.GroupSingle(Borda(5,ALTURA_TELA, 795, 0))
+BORDA_INFERIOR = Borda(LARGURA_TELA, 5, 0, 0)
 
 class Nave(pygame.sprite.Sprite):
     def __init__(self, path, pos_x, pos_y, velocidade=5):
@@ -54,10 +67,10 @@ class Invasores(pygame.sprite.Sprite):
         
     def shot(self, path):
         sprite = pygame.transform.scale(pygame.image.load(path), (ALTURA_TELA / 30, LARGURA_TELA / 80))
-        projetil = Projetil(imagem, self.rect.midtop, 1)
+        projetil = Projetil(imagem, self.rect.midtop, -1)
         return projetil
 
-    def update(self):
+    def update(self, direct):
         
         if (self.rect.x >= (LARGURA_TELA - self.rect.width)):
             self.velocidade = -1
@@ -67,11 +80,10 @@ class Invasores(pygame.sprite.Sprite):
             self.velocidade = 1
             self.rect.y += 40
 
-        self.rect.x += self.velocidade
-        
-        
+        self.rect.x += self.velocidade * direct
+
     def __str__(self):
-        return "Invasores em (%s, %s)" % (self.rect.x, self.rect.y)
+        return "Invasor em (%s, %s)" % (self.rect.x, self.rect.y)
     
 
 class Projetil(pygame.sprite.Sprite):
@@ -87,6 +99,7 @@ class Projetil(pygame.sprite.Sprite):
         self.velocidade = 10 * direcao
 
     def update(self):
+
         self.rect.y -= self.velocidade
         if self.rect.bottom <= 0:
             self.kill()
@@ -98,13 +111,13 @@ class SpaceInvaders():
         self.TIRO = pygame.sprite.Group()
         self.JANELA = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
         pygame.display.set_caption("Space Invaders")
-
+        self.SCORE = 0
         # Criando um objeto do tipo pygame.font.Font, onde é passada a fonte e o tamanho
         # se a fonte for passada como None é utilizada a padrão do sistema.
         self.FONTE = pygame.font.Font(self.DIRETORIO + "/fonts/space_invaders.ttf", 60)
         self.BACKGROUND = pygame.transform.scale(pygame.image.load(self.DIRETORIO + "/images/back.png"), (1200, 900))
         caminho_imagem_nave = self.DIRETORIO + "/images/ship.png"
-        self.NAVE =  Nave(caminho_imagem_nave, (LARGURA_TELA) / 2, (ALTURA_TELA - 80) ) 
+        self.NAVE =  Nave(caminho_imagem_nave, (LARGURA_TELA) / 2, (ALTURA_TELA - 110) )
         self.CLOCK = pygame.time.Clock()
         self.MATRIZ_DE_INIMIGOS = pygame.sprite.Group()
 
@@ -157,13 +170,13 @@ class SpaceInvaders():
     def inicia_inimigos(self):
 
         x = 20
-        y = 40
+        y = 10
         tipos_de_inimigos = []
 
         for i in xrange(1, 8):
             tipos_de_inimigos.append(pygame.image.load(self.DIRETORIO + ("/images/invader%d.png" % (i % 2))))
 
-        for j in xrange(4):
+        for j in xrange(5):
             
             for i in xrange(10):
                 sprite = pygame.transform.scale(tipos_de_inimigos[j], ((LARGURA_TELA / 20), (LARGURA_TELA / 20)))
@@ -175,18 +188,22 @@ class SpaceInvaders():
         
     
     def update(self):
-        
+        fonte_pontos = pygame.font.Font(self.DIRETORIO + "/fonts/space_invaders.ttf", 15)
+        pontuacao = fonte_pontos.render("SCORE: %d" % self.SCORE, True, BRANCO)
         self.JANELA.blit(self.BACKGROUND, (0, 0))
+        self.JANELA.blit(pontuacao, (LARGURA_TELA-100,ALTURA_TELA-30))
+        BORDA_DIREITA.draw(self.JANELA)
+        BORDA_ESQUERDA.draw(self.JANELA)
+        self.JANELA.blit(BORDA_INFERIOR.image, ( 0, ALTURA_TELA - 40 ) )
         self.MATRIZ_DE_INIMIGOS.draw(self.JANELA)
         self.TIRO.draw(self.JANELA)
         self.JANELA.blit(self.NAVE.image, self.NAVE.rect)
         self.NAVE.update()
         self.TIRO.update()
-        self.MATRIZ_DE_INIMIGOS.update()
 
-        pygame.sprite.groupcollide(self.TIRO, self.MATRIZ_DE_INIMIGOS, True, True)
-
-        #self.move_inimigos(1)
+        self.MATRIZ_DE_INIMIGOS.update(2)
+        hit = pygame.sprite.groupcollide(self.TIRO, self.MATRIZ_DE_INIMIGOS, True, True)
+        self.SCORE += 10 * len(hit)
         self.CLOCK.tick(60)
         pygame.display.update()
 
@@ -215,7 +232,6 @@ class SpaceInvaders():
                         if ((event.key == pygame.K_UP or event.key == pygame.K_SPACE) and len(self.TIRO)==0):
                             self.TIRO.add(self.NAVE.shot())
                 
-                print self.TIRO
                 self.update()
                 
 
