@@ -13,6 +13,7 @@ CINZA = (0, 128, 128)
 DIRECAO = {"D":1,"E":-1}
 LARGURA_TELA = 800
 ALTURA_TELA = 600
+DIRETORIO = os.getcwd()
 
 class Borda(pygame.sprite.Sprite):
     def __init__(self, x, y, a, b):
@@ -39,8 +40,11 @@ class Nave(pygame.sprite.Sprite):
         self.rect.y = pos_y
         self.velocidade = velocidade
         self.vidas = 3
+        self.som_tiro = pygame.mixer.Sound(DIRETORIO + "/sounds/shoot.wav")
+        self.som_atingido = pygame.mixer.Sound(DIRETORIO + "/sounds/shipexplosion.wav")
 
     def die(self):
+        self.som_atingido.play()
         self.rect.x = self.__initial_position[0]
         self.rect.y = self.__initial_position[1]
         self.vidas -= 1
@@ -57,6 +61,7 @@ class Nave(pygame.sprite.Sprite):
                 self.rect.x -= self.velocidade
 
     def shot(self):
+        self.som_tiro.play()
         projetil = Projetil(self.rect.midtop, 1)
         return projetil
 
@@ -114,7 +119,6 @@ class Projetil(pygame.sprite.Sprite):
 class SpaceInvaders():
     def __init__(self):
         # Definindo os caminhos dos arquivos necessários para o jogo
-        self.DIRETORIO = os.getcwd()
         self.TIRO_NAVE = pygame.sprite.GroupSingle()
         self.TIRO_INVADERS = pygame.sprite.Group()
         self.JANELA = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
@@ -122,9 +126,9 @@ class SpaceInvaders():
         self.SCORE = 0
         # Criando um objeto do tipo pygame.font.Font, onde é passada a fonte e o tamanho
         # se a fonte for passada como None é utilizada a padrão do sistema.
-        self.FONTE = pygame.font.Font(self.DIRETORIO + "/fonts/space_invaders.ttf", 60)
-        self.BACKGROUND = pygame.transform.scale(pygame.image.load(self.DIRETORIO + "/images/back.png"), (1200, 900))
-        caminho_imagem_nave = self.DIRETORIO + "/images/ship.png"
+        self.FONTE = pygame.font.Font(DIRETORIO + "/fonts/space_invaders.ttf", 60)
+        self.BACKGROUND = pygame.transform.scale(pygame.image.load(DIRETORIO + "/images/back.png"), (1200, 900))
+        caminho_imagem_nave = DIRETORIO + "/images/ship.png"
         self.NAVE =  Nave(caminho_imagem_nave, (LARGURA_TELA) / 2, (ALTURA_TELA - 110) )
         self.CLOCK = pygame.time.Clock()
         self.MATRIZ_DE_INIMIGOS = pygame.sprite.Group()
@@ -137,13 +141,13 @@ class SpaceInvaders():
         """
         menu = True
 
-        musica_menu = pygame.mixer.Sound(self.DIRETORIO + "/sounds/menu.wav")
+        musica_menu = pygame.mixer.Sound(DIRETORIO + "/sounds/menu.wav")
         musica_menu.play(-1)
 
         self.JANELA.fill((0, 0, 0))
         texto = self.FONTE.render("SPACE INVADERS", True, VERDE)
         self.JANELA.blit(texto, [(LARGURA_TELA - 550) / 2, 0])
-        self.FONTE = pygame.font.Font(self.DIRETORIO + "/fonts/space_invaders.ttf", 30)
+        self.FONTE = pygame.font.Font(DIRETORIO + "/fonts/space_invaders.ttf", 30)
         comando1 = self.FONTE.render(" ENTER ou I: INICIA ", True, BRANCO, AZUL)
         comando2 = self.FONTE.render(" ESC ou S: ENCERRA", True, BRANCO, AZUL)
         self.JANELA.blit(comando1, ((LARGURA_TELA - 350) / 2, ALTURA_TELA - 100))
@@ -182,7 +186,7 @@ class SpaceInvaders():
         tipos_de_inimigos = []
 
         for i in xrange(1, 8):
-            tipos_de_inimigos.append(pygame.image.load(self.DIRETORIO + ("/images/invader%d.png" % (i % 2))))
+            tipos_de_inimigos.append(pygame.image.load(DIRETORIO + ("/images/invader%d.png" % (i % 2))))
 
         for j in xrange(5):
             
@@ -197,8 +201,10 @@ class SpaceInvaders():
     
     def exibeVidasNave(self):
         y = 10
+        caminho_imagem_vidas = DIRETORIO + "/images/heart.png"
+        imagem_vidas = pygame.image.load(caminho_imagem_vidas)
         for i in xrange(self.NAVE.vidas):
-            self.JANELA.blit(pygame.transform.scale(self.NAVE.image, (25,25)), (y, 570))
+            self.JANELA.blit(pygame.transform.scale(imagem_vidas, (25,25)), (y, 570))
             y += 40
 
     def tiro_inimigo(self):
@@ -208,7 +214,7 @@ class SpaceInvaders():
             self.TIRO_INVADERS.add(l.shot())
         
     def update(self):
-        fonte_pontos = pygame.font.Font(self.DIRETORIO + "/fonts/space_invaders.ttf", 15)
+        fonte_pontos = pygame.font.Font(DIRETORIO + "/fonts/space_invaders.ttf", 15)
         pontuacao = fonte_pontos.render("SCORE: %d" % self.SCORE, True, BRANCO)
         self.JANELA.blit(self.BACKGROUND, (0, 0))
         self.JANELA.blit(pontuacao, (LARGURA_TELA-100,ALTURA_TELA-30))
@@ -221,21 +227,29 @@ class SpaceInvaders():
         self.JANELA.blit(self.NAVE.image, self.NAVE.rect)
         self.NAVE.update()
 
-        if pygame.time.get_ticks() % 2000.0 < 50:
+        if pygame.time.get_ticks() % 2000.0 < 30:
             self.tiro_inimigo()
         
         self.TIRO_NAVE.update()
         self.TIRO_INVADERS.update()
         self.MATRIZ_DE_INIMIGOS.update(1)
-
+       
+       
         pygame.sprite.groupcollide(self.TIRO_NAVE, self.TIRO_INVADERS, True, True)
         if pygame.sprite.spritecollide(self.NAVE, self.TIRO_INVADERS, True):
             self.NAVE.die()
             
         self.exibeVidasNave()
-        hit = pygame.sprite.groupcollide(self.TIRO_NAVE, self.MATRIZ_DE_INIMIGOS, True, True)
-        self.SCORE += 10 * len(hit)
+        musica_explosao = pygame.mixer.Sound(DIRETORIO + "/sounds/invaderkilled.wav")
         
+        
+        for atingidos in pygame.sprite.groupcollide(self.TIRO_NAVE, self.MATRIZ_DE_INIMIGOS, True, True).values():
+            for invasor in atingidos:
+                musica_explosao.play()
+                imagem_explosao = pygame.image.load(DIRETORIO + "/images/explosion.png")
+                self.JANELA.blit(pygame.transform.scale(imagem_explosao, ((LARGURA_TELA / 20), (LARGURA_TELA / 20))), (invasor.rect.x, invasor.rect.y))
+                self.SCORE += 10
+
         self.CLOCK.tick(60)
         pygame.display.update()
 
