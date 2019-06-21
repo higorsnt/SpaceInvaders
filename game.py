@@ -29,7 +29,7 @@ class Borda(pygame.sprite.Sprite):
 
 BORDA_ESQUERDA = pygame.sprite.GroupSingle(Borda(5,ALTURA_TELA, 0, 0))
 BORDA_DIREITA = pygame.sprite.GroupSingle(Borda(5,ALTURA_TELA, 795, 0))
-BORDA_INFERIOR = Borda(LARGURA_TELA, 5, 0, 0)
+BORDA_INFERIOR = pygame.sprite.GroupSingle(Borda(LARGURA_TELA, 5, 0, 560))
 
 
 class Nave(pygame.sprite.Sprite):
@@ -54,7 +54,6 @@ class Nave(pygame.sprite.Sprite):
         self.rect.x = self.__initial_position[0]
         self.rect.y = self.__initial_position[1]
         self.vidas -= 1
-
 
     def update(self):
 
@@ -143,13 +142,14 @@ class SpaceInvaders():
         self.FONTE = pygame.font.Font(DIRETORIO + "/fonts/space_invaders.ttf", 60)
         self.FONTE_PONTOS = pygame.font.Font(DIRETORIO + "/fonts/space_invaders.ttf", 15)
         self.SOM_EXPLOSAO = pygame.mixer.Sound(DIRETORIO + "/sounds/invaderkilled.wav")
-        self.BACKGROUND = pygame.transform.scale(pygame.image.load(DIRETORIO + "/images/back.png"), (1200, 900))
+        imagem_de_fundo = pygame.image.load(DIRETORIO + "/images/back.png")
         caminho_imagem_nave = DIRETORIO + "/images/ship.png"
         imagem_explosao = pygame.image.load(DIRETORIO + "/images/explosion.png")
         imagem_vidas = pygame.image.load(DIRETORIO + "/images/heart.png")
+        self.BACKGROUND = pygame.transform.scale(imagem_de_fundo, (LARGURA_TELA, ALTURA_TELA))
         self.IMAGEM_VIDAS = pygame.transform.scale(imagem_vidas, (25,25))
         self.IMAGEM_EXPLOSAO = pygame.transform.scale(imagem_explosao, ((LARGURA_TELA / 20), (LARGURA_TELA / 20)))
-        self.NAVE =  Nave(caminho_imagem_nave, (LARGURA_TELA) / 2, (ALTURA_TELA - 110) )
+        self.NAVE = Nave(caminho_imagem_nave, (LARGURA_TELA) / 2, (ALTURA_TELA - 110) )
         self.CLOCK = pygame.time.Clock()
         self.MATRIZ_DE_INIMIGOS = pygame.sprite.Group()
 
@@ -239,9 +239,9 @@ class SpaceInvaders():
         pontuacao = self.FONTE_PONTOS.render("SCORE: %d" % self.SCORE, True, BRANCO)
         self.JANELA.blit(self.BACKGROUND, (0, 0))
         self.JANELA.blit(pontuacao, (LARGURA_TELA-100,ALTURA_TELA-30))
+        BORDA_INFERIOR.draw(self.JANELA)
         BORDA_DIREITA.draw(self.JANELA)
         BORDA_ESQUERDA.draw(self.JANELA)
-        self.JANELA.blit(BORDA_INFERIOR.image, ( 0, ALTURA_TELA - 40 ) )
         self.MATRIZ_DE_INIMIGOS.draw(self.JANELA)
         self.TIRO_NAVE.draw(self.JANELA)
         self.TIRO_INVADERS.draw(self.JANELA)
@@ -301,10 +301,11 @@ class SpaceInvaders():
                 self.update()               
 
 
-
 if __name__ == "__main__":
     # Comando necessário para se inicializar os módulos do Pygame
+    pygame.mixer.pre_init(22050, -16, 2, 1024)
     pygame.init()
+    pygame.mixer.init(22050, -16, 2, 1024)
     game = SpaceInvaders()
     game.main()
     # Comando que encerra os módulos do Pygame
