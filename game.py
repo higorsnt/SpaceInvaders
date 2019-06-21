@@ -15,7 +15,9 @@ LARGURA_TELA = 800
 ALTURA_TELA = 600
 DIRETORIO = os.getcwd()
 
+
 class Borda(pygame.sprite.Sprite):
+    
     def __init__(self, x, y, a, b):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface( (x, y) )
@@ -24,11 +26,14 @@ class Borda(pygame.sprite.Sprite):
         self.rect.x = a
         self.rect.y = b
     
+
 BORDA_ESQUERDA = pygame.sprite.GroupSingle(Borda(5,ALTURA_TELA, 0, 0))
 BORDA_DIREITA = pygame.sprite.GroupSingle(Borda(5,ALTURA_TELA, 795, 0))
 BORDA_INFERIOR = Borda(LARGURA_TELA, 5, 0, 0)
 
+
 class Nave(pygame.sprite.Sprite):
+    
     def __init__(self, path, pos_x, pos_y, velocidade=5):
         
         self.__initial_position = (pos_x, pos_y)
@@ -42,6 +47,7 @@ class Nave(pygame.sprite.Sprite):
         self.vidas = 3
         self.som_tiro = pygame.mixer.Sound(DIRETORIO + "/sounds/shoot.wav")
         self.som_atingido = pygame.mixer.Sound(DIRETORIO + "/sounds/shipexplosion.wav")
+
 
     def die(self):
         self.som_atingido.play()
@@ -60,13 +66,16 @@ class Nave(pygame.sprite.Sprite):
             if self.rect.left > self.velocidade:
                 self.rect.x -= self.velocidade
 
+
     def shot(self):
         self.som_tiro.play()
         projetil = Projetil(self.rect.midtop, 1)
         return projetil
 
+
     def __str__(self):
         return "Nave em (%s, %s)" % (self.rect.x, self.rect.y)
+
 
 class Invasores(pygame.sprite.Sprite):
 
@@ -77,10 +86,12 @@ class Invasores(pygame.sprite.Sprite):
         self.rect.x = pos_x
         self.rect.y = pos_y
         self.velocidade = velocidade
-        
+
+
     def shot(self):
         projetil = Projetil(self.rect.midtop, -1, v=4,color=VERMELHO)
         return projetil
+
 
     def update(self, direct):
         
@@ -93,6 +104,7 @@ class Invasores(pygame.sprite.Sprite):
             self.rect.y += 40
 
         self.rect.x += self.velocidade * direct
+
 
     def __str__(self):
         return "Invasor em (%s, %s)" % (self.rect.x, self.rect.y)
@@ -110,12 +122,14 @@ class Projetil(pygame.sprite.Sprite):
         self.direcao = direcao
         self.velocidade = v * direcao
 
+
     def update(self):
 
         self.rect.y -= self.velocidade
         if self.rect.bottom <= 0:
             self.kill()
     
+
 class SpaceInvaders():
     def __init__(self):
         # Definindo os caminhos dos arquivos necessários para o jogo
@@ -127,11 +141,18 @@ class SpaceInvaders():
         # Criando um objeto do tipo pygame.font.Font, onde é passada a fonte e o tamanho
         # se a fonte for passada como None é utilizada a padrão do sistema.
         self.FONTE = pygame.font.Font(DIRETORIO + "/fonts/space_invaders.ttf", 60)
+        self.FONTE_PONTOS = pygame.font.Font(DIRETORIO + "/fonts/space_invaders.ttf", 15)
+        self.SOM_EXPLOSAO = pygame.mixer.Sound(DIRETORIO + "/sounds/invaderkilled.wav")
         self.BACKGROUND = pygame.transform.scale(pygame.image.load(DIRETORIO + "/images/back.png"), (1200, 900))
         caminho_imagem_nave = DIRETORIO + "/images/ship.png"
+        imagem_explosao = pygame.image.load(DIRETORIO + "/images/explosion.png")
+        imagem_vidas = pygame.image.load(DIRETORIO + "/images/heart.png")
+        self.IMAGEM_VIDAS = pygame.transform.scale(imagem_vidas, (25,25))
+        self.IMAGEM_EXPLOSAO = pygame.transform.scale(imagem_explosao, ((LARGURA_TELA / 20), (LARGURA_TELA / 20)))
         self.NAVE =  Nave(caminho_imagem_nave, (LARGURA_TELA) / 2, (ALTURA_TELA - 110) )
         self.CLOCK = pygame.time.Clock()
         self.MATRIZ_DE_INIMIGOS = pygame.sprite.Group()
+
 
     def tela_inicial(self):
         """
@@ -179,6 +200,7 @@ class SpaceInvaders():
                         musica_menu.stop()
                         return False
 
+
     def inicia_inimigos(self):
 
         x = 20
@@ -201,11 +223,10 @@ class SpaceInvaders():
     
     def exibeVidasNave(self):
         y = 10
-        caminho_imagem_vidas = DIRETORIO + "/images/heart.png"
-        imagem_vidas = pygame.image.load(caminho_imagem_vidas)
         for i in xrange(self.NAVE.vidas):
-            self.JANELA.blit(pygame.transform.scale(imagem_vidas, (25,25)), (y, 570))
+            self.JANELA.blit(self.IMAGEM_VIDAS, (y, 570))
             y += 40
+
 
     def tiro_inimigo(self):
         enem = [ i for i in self.MATRIZ_DE_INIMIGOS ]
@@ -213,9 +234,9 @@ class SpaceInvaders():
             l = choice(enem)
             self.TIRO_INVADERS.add(l.shot())
         
+
     def update(self):
-        fonte_pontos = pygame.font.Font(DIRETORIO + "/fonts/space_invaders.ttf", 15)
-        pontuacao = fonte_pontos.render("SCORE: %d" % self.SCORE, True, BRANCO)
+        pontuacao = self.FONTE_PONTOS.render("SCORE: %d" % self.SCORE, True, BRANCO)
         self.JANELA.blit(self.BACKGROUND, (0, 0))
         self.JANELA.blit(pontuacao, (LARGURA_TELA-100,ALTURA_TELA-30))
         BORDA_DIREITA.draw(self.JANELA)
@@ -227,7 +248,7 @@ class SpaceInvaders():
         self.JANELA.blit(self.NAVE.image, self.NAVE.rect)
         self.NAVE.update()
 
-        if pygame.time.get_ticks() % 2000.0 < 30:
+        if pygame.time.get_ticks() % 2000.0 < 20:
             self.tiro_inimigo()
         
         self.TIRO_NAVE.update()
@@ -237,17 +258,16 @@ class SpaceInvaders():
        
         pygame.sprite.groupcollide(self.TIRO_NAVE, self.TIRO_INVADERS, True, True)
         if pygame.sprite.spritecollide(self.NAVE, self.TIRO_INVADERS, True):
+            self.SOM_EXPLOSAO.play()
+            self.JANELA.blit(self.IMAGEM_EXPLOSAO, (self.NAVE.rect.x, self.NAVE.rect.y))
             self.NAVE.die()
             
         self.exibeVidasNave()
-        musica_explosao = pygame.mixer.Sound(DIRETORIO + "/sounds/invaderkilled.wav")
-        
         
         for atingidos in pygame.sprite.groupcollide(self.TIRO_NAVE, self.MATRIZ_DE_INIMIGOS, True, True).values():
             for invasor in atingidos:
-                musica_explosao.play()
-                imagem_explosao = pygame.image.load(DIRETORIO + "/images/explosion.png")
-                self.JANELA.blit(pygame.transform.scale(imagem_explosao, ((LARGURA_TELA / 20), (LARGURA_TELA / 20))), (invasor.rect.x, invasor.rect.y))
+                self.SOM_EXPLOSAO.play()
+                self.JANELA.blit(self.IMAGEM_EXPLOSAO, (invasor.rect.x, invasor.rect.y))
                 self.SCORE += 10
 
         self.CLOCK.tick(60)
@@ -278,9 +298,9 @@ class SpaceInvaders():
                         if ((event.key == pygame.K_UP or event.key == pygame.K_SPACE) and not self.TIRO_NAVE):
                             self.TIRO_NAVE.add(self.NAVE.shot())
                 
-                self.update()
+                self.update()               
 
-            #print pygame.time.get_ticks()                
+
 
 if __name__ == "__main__":
     # Comando necessário para se inicializar os módulos do Pygame
