@@ -12,8 +12,9 @@ O objetivo do jogo é destruir os aliens com a sua nave e dessa forma impedir qu
 1. [Eventos essenciais em um jogo](#eventos-essenciais-em-um-jogo)
 2. [Pygame](#pygame-)
 3. [Instalação Pygame](#instalando-o-pygame)
-4. [Executar o jogo](#instalando-o-pygame)
+4. [Executar o jogo](#executando-o-jogo)
 5. [Links úteis para aprender Pygame](#links-úteis)
+6. [Autores](#autores)
 
 ### Eventos Essenciais em um jogo
 
@@ -115,6 +116,23 @@ Em seguida deverá abrir a janela do jogo 😁
 * Dúvidas com Python Orientado à Objetos?
     * [Matéria da página Medium que pode ajudar](https://medium.com/@nicolasbontempo/programando-python-orientado-a-objetos-d0069b2f1eb5)
     * [Material da UNESP - Campus de Ilha Solteira](https://www.dcc.ufrj.br/~fabiom/mab225/pythonoo.pdf)
+
+</br>
+</br>
+</br>
+
+### Autores
+
+Código desenvolvido para auxiliar aos alunos da disciplina de Laboratório de Programação I  
+**Autores:**  
+* [Higor Santos](https://github.com/HigorSnt)  
+* [Mateus Alves](https://github.com/mateustranquilino)
+
+</br>
+
+<p align="center">
+  <img src="http://alumni.computacao.ufcg.edu.br/static/logica/images/logo.png"/>
+</p>
 
 _________________________________________________
 1. <a name="footnote-1"></a> Módulos são arquivo que contêm definições e instruções de Python, ou seja, qualquer arquivo _.py_ é um módulo!
