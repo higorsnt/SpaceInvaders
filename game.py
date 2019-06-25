@@ -206,7 +206,7 @@ class SpaceInvaders():
 
         texto1 = self.FONTE.render(" FIM DE JOGO ", True, VERDE)
         texto2 = self.FONTE.render("PONTUACAO FINAL: %d" % self.SCORE, True, VERDE)
-        self.JANELA.blit(texto1, ((LARGURA_TELA - 350) / 2, ALTURA_TELA - 500))
+        self.JANELA.blit(texto1, ((LARGURA_TELA - 240) / 2, ALTURA_TELA - 500))
         self.JANELA.blit(texto2, ((LARGURA_TELA - 350) / 2, ALTURA_TELA - 300))
         pygame.display.update()
         run = True
@@ -301,7 +301,7 @@ class SpaceInvaders():
                     run = False
 
             else:
-                if self.NAVE.vidas <= 0:
+                if self.NAVE.vidas <= 0 or len(self.MATRIZ_DE_INIMIGOS) == 0:
                     self.tela_final()
                     run = False
                 else:
