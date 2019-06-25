@@ -44,7 +44,7 @@ class Nave(pygame.sprite.Sprite):
         self.rect.x = pos_x
         self.rect.y = pos_y
         self.velocidade = velocidade
-        self.vidas = 3
+        self.vidas = 0
         self.som_tiro = pygame.mixer.Sound(DIRETORIO + "/sounds/shoot.wav")
         self.som_atingido = pygame.mixer.Sound(DIRETORIO + "/sounds/shipexplosion.wav")
 
@@ -169,8 +169,13 @@ class SpaceInvaders():
         self.FONTE = pygame.font.Font(DIRETORIO + "/fonts/space_invaders.ttf", 30)
         comando1 = self.FONTE.render(" ENTER ou I: INICIA ", True, BRANCO, AZUL)
         comando2 = self.FONTE.render(" ESC ou S: ENCERRA", True, BRANCO, AZUL)
-        self.JANELA.blit(comando1, ((LARGURA_TELA - 350) / 2, ALTURA_TELA - 100))
-        self.JANELA.blit(comando2, ((LARGURA_TELA - 350) / 2, ALTURA_TELA - 50))
+        comando1_rect = comando1.get_rect(center=(LARGURA_TELA/2, ALTURA_TELA-100))
+        comando2_rect = comando2.get_rect(center=(LARGURA_TELA/2, ALTURA_TELA-50))
+        #self.JANELA.blit(comando1, ((LARGURA_TELA - 350) / 2, ALTURA_TELA - 100))
+        #self.JANELA.blit(comando2, ((LARGURA_TELA - 350) / 2, ALTURA_TELA - 50))
+        self.JANELA.blit(comando1, comando1_rect)
+        self.JANELA.blit(comando2, comando2_rect)
+        
         pygame.display.update()
 
         while menu:
@@ -206,8 +211,17 @@ class SpaceInvaders():
 
         texto1 = self.FONTE.render(" FIM DE JOGO ", True, VERDE)
         texto2 = self.FONTE.render("PONTUACAO FINAL: %d" % self.SCORE, True, VERDE)
-        self.JANELA.blit(texto1, ((LARGURA_TELA - 240) / 2, ALTURA_TELA - 500))
-        self.JANELA.blit(texto2, ((LARGURA_TELA - 350) / 2, ALTURA_TELA - 300))
+        texto1_rect = texto1.get_rect(center=(LARGURA_TELA / 2,ALTURA_TELA - 500))
+        texto2_rect = texto2.get_rect(center=(LARGURA_TELA / 2,ALTURA_TELA - 300))
+        self.JANELA.blit(texto1, texto1_rect)
+        self.JANELA.blit(texto2, texto2_rect)
+        
+        texto3 = self.FONTE.render("PRESSIONE ENTER PARA TENTAR NOVAMENTE", True, VERDE)
+        texto4 = self.FONTE.render("PRESSIONE ESC PARA SAIR", True, VERDE)
+        texto3_rect = texto3.get_rect(center=((LARGURA_TELA) / 2, ALTURA_TELA - 100))
+        texto4_rect = texto4.get_rect(center=((LARGURA_TELA) / 2, ALTURA_TELA - 40))
+        self.JANELA.blit(texto3, texto3_rect)
+        self.JANELA.blit(texto4, texto4_rect)
         pygame.display.update()
         run = True
 
