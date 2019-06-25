@@ -44,15 +44,17 @@ class Nave(pygame.sprite.Sprite):
         self.rect.x = pos_x
         self.rect.y = pos_y
         self.velocidade = velocidade
-        self.vidas = 0
+        self.vidas = 3
         self.som_tiro = pygame.mixer.Sound(DIRETORIO + "/sounds/shoot.wav")
         self.som_atingido = pygame.mixer.Sound(DIRETORIO + "/sounds/shipexplosion.wav")
 
-
-    def die(self):
-        self.som_atingido.play()
+    def posicao_inicial(self):
         self.rect.x = self.__initial_position[0]
         self.rect.y = self.__initial_position[1]
+	
+    def die(self):
+        self.som_atingido.play()
+        self.posicao_inicial()
         self.vidas -= 1
 
     def update(self):
@@ -171,8 +173,6 @@ class SpaceInvaders():
         comando2 = self.FONTE.render(" ESC ou S: ENCERRA", True, BRANCO, AZUL)
         comando1_rect = comando1.get_rect(center=(LARGURA_TELA/2, ALTURA_TELA-100))
         comando2_rect = comando2.get_rect(center=(LARGURA_TELA/2, ALTURA_TELA-50))
-        #self.JANELA.blit(comando1, ((LARGURA_TELA - 350) / 2, ALTURA_TELA - 100))
-        #self.JANELA.blit(comando2, ((LARGURA_TELA - 350) / 2, ALTURA_TELA - 50))
         self.JANELA.blit(comando1, comando1_rect)
         self.JANELA.blit(comando2, comando2_rect)
         
@@ -187,7 +187,7 @@ class SpaceInvaders():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     x, y = pygame.mouse.get_pos()
                     if ((x >= ((LARGURA_TELA - 550) / 2)) and (y >= (ALTURA_TELA - 100))) and ((x <= (LARGURA_TELA - 340)) and (y <= (ALTURA_TELA - 55))):
-                        self.inicia_inimigos()
+                        self.iniciar_jogo()
                         musica_menu.stop()
                         return True
                     if ((x >= ((LARGURA_TELA - 550) / 2)) and (y >= (ALTURA_TELA - 50))) and ((x <= (LARGURA_TELA - 340)) and (y <= (ALTURA_TELA - 10))):
@@ -196,7 +196,7 @@ class SpaceInvaders():
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_i or event.key == pygame.K_RETURN:
-                        self.inicia_inimigos()
+                        self.iniciar_jogo()
                         musica_menu.stop()
                         return True
                     if event.key == pygame.K_s or event.key == pygame.K_ESCAPE:
@@ -223,14 +223,34 @@ class SpaceInvaders():
         self.JANELA.blit(texto3, texto3_rect)
         self.JANELA.blit(texto4, texto4_rect)
         pygame.display.update()
-        run = True
-
-        while run:
+ 
+        while True:
+            
             for event in pygame.event.get():
+                
                 if event.type == pygame.QUIT:
                     musica_menu.stop()
-                    run = False
+                    pygame.quit()
+                
+                if event.type == pygame.KEYDOWN:
+					
+                    if event.key == pygame.K_RETURN:
+                        self.iniciar_jogo()
+                        return
+						
+                    if event.key == pygame.K_ESCAPE:
+                        pygame.quit()
 
+
+    def iniciar_jogo(self):
+        self.MATRIZ_DE_INIMIGOS.empty()
+        self.TIRO_INVADERS.empty()
+        self.TIRO_NAVE.empty()
+        self.inicia_inimigos()
+        self.NAVE.posicao_inicial
+        self.NAVE.vidas = 3
+        self.update()
+	
     def inicia_inimigos(self):
 
         x = 20
@@ -304,20 +324,22 @@ class SpaceInvaders():
         # Variável necessária para que o loop onde o jogo ocorre dure o tempo necessário.
         run = True
         menu = True
-        while run:
-
-            if menu:
-                comando = self.tela_inicial()
-                if comando:
-                    menu = False
-                    self.inicia_inimigos()
-                else:
-                    run = False
-
+        
+        while menu:
+            comando = self.tela_inicial()
+            if comando:
+                menu = False
+                self.iniciar_jogo()
             else:
+                menu = False
+                pygame.quit()
+        
+          
+            while run:
+
                 if self.NAVE.vidas <= 0 or len(self.MATRIZ_DE_INIMIGOS) == 0:
                     self.tela_final()
-                    run = False
+
                 else:
                     for event in pygame.event.get():
                         # Verificando se o usuário clicou na opção de fechar a janela.
@@ -327,8 +349,8 @@ class SpaceInvaders():
                         if event.type == pygame.KEYDOWN:
                             if ((event.key == pygame.K_UP or event.key == pygame.K_SPACE) and not self.TIRO_NAVE):
                                 self.TIRO_NAVE.add(self.NAVE.shot())
-                    
-                    self.update()               
+
+                    self.update()
 
 
 if __name__ == "__main__":
