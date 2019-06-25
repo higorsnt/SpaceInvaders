@@ -121,15 +121,14 @@ class Projetil(pygame.sprite.Sprite):
         self.direcao = direcao
         self.velocidade = v * direcao
 
-
     def update(self):
 
         self.rect.y -= self.velocidade
         if self.rect.bottom <= 0:
             self.kill()
-    
 
 class SpaceInvaders():
+    
     def __init__(self):
         # Definindo os caminhos dos arquivos necessários para o jogo
         self.TIRO_NAVE = pygame.sprite.GroupSingle()
@@ -152,7 +151,6 @@ class SpaceInvaders():
         self.NAVE = Nave(caminho_imagem_nave, (LARGURA_TELA) / 2, (ALTURA_TELA - 110) )
         self.CLOCK = pygame.time.Clock()
         self.MATRIZ_DE_INIMIGOS = pygame.sprite.Group()
-
 
     def tela_inicial(self):
         """
@@ -199,7 +197,25 @@ class SpaceInvaders():
                     if event.key == pygame.K_s or event.key == pygame.K_ESCAPE:
                         musica_menu.stop()
                         return False
+    
+    def tela_final(self):
+        musica_menu = pygame.mixer.Sound(DIRETORIO + "/sounds/menu.wav")
+        musica_menu.play(-1)
 
+        self.JANELA.fill((0, 0, 0))
+
+        texto1 = self.FONTE.render(" FIM DE JOGO ", True, VERDE)
+        texto2 = self.FONTE.render("PONTUACAO FINAL: %d" % self.SCORE, True, VERDE)
+        self.JANELA.blit(texto1, ((LARGURA_TELA - 240) / 2, ALTURA_TELA - 500))
+        self.JANELA.blit(texto2, ((LARGURA_TELA - 350) / 2, ALTURA_TELA - 300))
+        pygame.display.update()
+        run = True
+
+        while run:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    musica_menu.stop()
+                    run = False
 
     def inicia_inimigos(self):
 
@@ -220,20 +236,17 @@ class SpaceInvaders():
             y += 40
             x = 20
         
-    
     def exibeVidasNave(self):
         y = 10
         for i in xrange(self.NAVE.vidas):
             self.JANELA.blit(self.IMAGEM_VIDAS, (y, 570))
             y += 40
 
-
     def tiro_inimigo(self):
         enem = [ i for i in self.MATRIZ_DE_INIMIGOS ]
         for i in xrange(2):
             l = choice(enem)
             self.TIRO_INVADERS.add(l.shot())
-        
 
     def update(self):
         pontuacao = self.FONTE_PONTOS.render("SCORE: %d" % self.SCORE, True, BRANCO)
@@ -261,9 +274,9 @@ class SpaceInvaders():
             self.SOM_EXPLOSAO.play()
             self.JANELA.blit(self.IMAGEM_EXPLOSAO, (self.NAVE.rect.x, self.NAVE.rect.y))
             self.NAVE.die()
-            
-        self.exibeVidasNave()
         
+        self.exibeVidasNave()
+            
         for atingidos in pygame.sprite.groupcollide(self.TIRO_NAVE, self.MATRIZ_DE_INIMIGOS, True, True).values():
             for invasor in atingidos:
                 self.SOM_EXPLOSAO.play()
@@ -272,7 +285,6 @@ class SpaceInvaders():
 
         self.CLOCK.tick(60)
         pygame.display.update()
-
    
     def main(self):
         # Variável necessária para que o loop onde o jogo ocorre dure o tempo necessário.
@@ -289,16 +301,20 @@ class SpaceInvaders():
                     run = False
 
             else:
-                for event in pygame.event.get():
-                    # Verificando se o usuário clicou na opção de fechar a janela.
-                    if event.type == pygame.QUIT:
-                        run = False
+                if self.NAVE.vidas <= 0 or len(self.MATRIZ_DE_INIMIGOS) == 0:
+                    self.tela_final()
+                    run = False
+                else:
+                    for event in pygame.event.get():
+                        # Verificando se o usuário clicou na opção de fechar a janela.
+                        if event.type == pygame.QUIT:
+                            run = False
 
-                    if event.type == pygame.KEYDOWN:
-                        if ((event.key == pygame.K_UP or event.key == pygame.K_SPACE) and not self.TIRO_NAVE):
-                            self.TIRO_NAVE.add(self.NAVE.shot())
-                
-                self.update()               
+                        if event.type == pygame.KEYDOWN:
+                            if ((event.key == pygame.K_UP or event.key == pygame.K_SPACE) and not self.TIRO_NAVE):
+                                self.TIRO_NAVE.add(self.NAVE.shot())
+                    
+                    self.update()               
 
 
 if __name__ == "__main__":
