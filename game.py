@@ -16,22 +16,6 @@ ALTURA_TELA = 600
 DIRETORIO = os.getcwd()
 
 
-class Borda(pygame.sprite.Sprite):
-    
-    def __init__(self, x, y, a, b):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface( (x, y) )
-        self.image.fill(BRANCO)
-        self.rect = self.image.get_rect()
-        self.rect.x = a
-        self.rect.y = b
-    
-
-BORDA_ESQUERDA = pygame.sprite.GroupSingle(Borda(5,ALTURA_TELA, 0, 0))
-BORDA_DIREITA = pygame.sprite.GroupSingle(Borda(5,ALTURA_TELA, 795, 0))
-BORDA_INFERIOR = pygame.sprite.GroupSingle(Borda(LARGURA_TELA, 5, 0, 560))
-
-
 class Nave(pygame.sprite.Sprite):
     
     def __init__(self, path, pos_x, pos_y, velocidade=5):
@@ -286,9 +270,16 @@ class SpaceInvaders():
         pontuacao = self.FONTE_PONTOS.render("SCORE: %d" % self.SCORE, True, BRANCO)
         self.JANELA.blit(self.BACKGROUND, (0, 0))
         self.JANELA.blit(pontuacao, (LARGURA_TELA-100,ALTURA_TELA-30))
-        BORDA_INFERIOR.draw(self.JANELA)
-        BORDA_DIREITA.draw(self.JANELA)
-        BORDA_ESQUERDA.draw(self.JANELA)
+        pygame.draw.rect(self.JANELA, BRANCO, [0, 0, 5,ALTURA_TELA])
+        pygame.draw.rect(self.JANELA, BRANCO, [795, 0, 5,ALTURA_TELA])
+        pygame.draw.rect(self.JANELA, BRANCO, [0, 560, LARGURA_TELA, 5])
+        
+        
+        #BORDA_ESQUERDA = pygame.sprite.GroupSingle(Borda(5,ALTURA_TELA, 0, 0))
+        #BORDA_DIREITA = pygame.sprite.GroupSingle(Borda(5,ALTURA_TELA, 795, 0))
+        #BORDA_INFERIOR = pygame.sprite.GroupSingle(Borda(LARGURA_TELA, 5, 0, 560))
+        
+        
         self.MATRIZ_DE_INIMIGOS.draw(self.JANELA)
         self.TIRO_NAVE.draw(self.JANELA)
         self.TIRO_INVADERS.draw(self.JANELA)
@@ -337,8 +328,12 @@ class SpaceInvaders():
           
             while run:
 
-                if self.NAVE.vidas <= 0 or len(self.MATRIZ_DE_INIMIGOS) == 0:
+                if self.NAVE.vidas <= 0:
                     self.tela_final()
+                    self.SCORE = 0
+
+                elif len(self.MATRIZ_DE_INIMIGOS) == 0:
+                    self.iniciar_jogo()
 
                 else:
                     for event in pygame.event.get():
