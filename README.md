@@ -116,6 +116,7 @@ Em seguida deverá abrir a janela do jogo 😁
 * Dúvidas com Python Orientado à Objetos?
     * [Matéria da página Medium que pode ajudar](https://medium.com/@nicolasbontempo/programando-python-orientado-a-objetos-d0069b2f1eb5)
     * [Material da UNESP - Campus de Ilha Solteira](https://www.dcc.ufrj.br/~fabiom/mab225/pythonoo.pdf)
+ * Qual cor usar? [Acesse aqui!](http://www.erikasarti.com/html/tabela-cores/)
 
 </br>
 </br>
