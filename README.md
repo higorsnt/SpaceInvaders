@@ -108,7 +108,7 @@ Em seguida deverá abrir a janela do jogo 😁
 
 ### Links Úteis
 
-* [Apresentação feita em sala de aula]()
+* [Apresentação feita em sala de aula](https://docs.google.com/presentation/d/17zlx3HSecMyiAkZ4KWEEa_797A9hyfjCF2dA1NOeEss/edit?usp=sharing)
 * [A documentação oficial do Pygame é muito fácil de ser utilizada!](https://www.pygame.org/docs/)
 * [Esse material do curso realizado pela UFG!](http://www.labtime.ufg.br/cgames/pdf/CProgPy_Pygame.pdf)
 * [Repositório do Pygame no Github](https://github.com/pygame/pygame)
@@ -136,4 +136,4 @@ Código desenvolvido para auxiliar aos alunos da disciplina de Laboratório de P
 </p>
 
 _________________________________________________
-1. <a name="footnote-1"></a> Módulos são arquivo que contêm definições e instruções de Python, ou seja, qualquer arquivo _.py_ é um módulo!
+1. <a name="footnote-1"></a> Módulos são arquivos que contêm definições e instruções de Python, ou seja, qualquer arquivo _.py_ é um módulo!
