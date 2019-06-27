@@ -121,6 +121,8 @@ class SpaceInvaders():
         self.TIRO_INVADERS = pygame.sprite.Group()
         self.JANELA = pygame.display.set_mode((LARGURA_TELA, ALTURA_TELA))
         pygame.display.set_caption("Space Invaders")
+        logo = pygame.image.load("images/logo.png")
+        pygame.display.set_icon(logo)
         self.SCORE = 0
         # Criando um objeto do tipo pygame.font.Font, onde é passada a fonte e o tamanho
         # se a fonte for passada como None é utilizada a padrão do sistema.
