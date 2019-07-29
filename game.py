@@ -72,11 +72,9 @@ class Invasores(pygame.sprite.Sprite):
         self.rect.y = pos_y
         self.velocidade = velocidade
 
-
     def shot(self):
-        projetil = Projetil(self.rect.midtop, -1, v=4,color=VERMELHO)
+        projetil = Projetil(self.rect.midtop, -1, v=4, color=VERMELHO)
         return projetil
-
 
     def update(self, direct):
         
@@ -89,7 +87,6 @@ class Invasores(pygame.sprite.Sprite):
             self.rect.y += 40
 
         self.rect.x += self.velocidade * direct
-
 
     def __str__(self):
         return "Invasor em (%s, %s)" % (self.rect.x, self.rect.y)
@@ -112,6 +109,7 @@ class Projetil(pygame.sprite.Sprite):
         self.rect.y -= self.velocidade
         if self.rect.bottom <= 0:
             self.kill()
+
 
 class SpaceInvaders():
     
@@ -217,6 +215,7 @@ class SpaceInvaders():
                 if event.type == pygame.QUIT:
                     musica_menu.stop()
                     pygame.quit()
+                    exit()
                 
                 if event.type == pygame.KEYDOWN:
 					
@@ -226,6 +225,7 @@ class SpaceInvaders():
 						
                     if event.key == pygame.K_ESCAPE:
                         pygame.quit()
+                        exit()
 
 
     def iniciar_jogo(self):
@@ -326,6 +326,7 @@ class SpaceInvaders():
             else:
                 menu = False
                 pygame.quit()
+                exit()
         
           
             while run:
@@ -352,8 +353,8 @@ class SpaceInvaders():
 
 if __name__ == "__main__":
     # Comando necessário para se inicializar os módulos do Pygame
-    pygame.mixer.pre_init(22050, -16, 2, 1024)
     pygame.init()
+    pygame.mixer.pre_init(22050, -16, 2, 1024)
     pygame.mixer.init(22050, -16, 2, 1024)
     game = SpaceInvaders()
     game.main()
