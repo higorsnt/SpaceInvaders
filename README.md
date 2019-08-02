@@ -9,12 +9,14 @@ O objetivo do jogo é destruir os aliens com a sua nave e dessa forma impedir qu
 
 ## Tópicos
 
-1. [Eventos essenciais em um jogo](#eventos-essenciais-em-um-jogo)
-2. [Pygame](#pygame-)
-3. [Instalação Pygame](#instalando-o-pygame)
-4. [Executar o jogo](#executando-o-jogo)
-5. [Links úteis para aprender Pygame](#links-úteis)
-6. [Autores](#autores)
+- [SPACE INVADERS 🛸](#space-invaders-%f0%9f%9b%b8)
+  - [Tópicos](#t%c3%b3picos)
+    - [Eventos Essenciais em um jogo](#eventos-essenciais-em-um-jogo)
+    - [Pygame 🐍](#pygame-%f0%9f%90%8d)
+    - [Instalando o Pygame](#instalando-o-pygame)
+    - [Executando o jogo](#executando-o-jogo)
+    - [Links Úteis](#links-%c3%9ateis)
+    - [Autores](#autores)
 
 ### Eventos Essenciais em um jogo
 
@@ -103,7 +105,7 @@ $ python game.py
 Em seguida deverá abrir a janela do jogo 😁
 
 <p align="center">
-    <img src="images/extras/tela_inicial.png">
+    <img src="images/tela_inicial.png">
 </p>
 
 ### Links Úteis
