@@ -64,10 +64,15 @@ class Ship(pygame.sprite.Sprite):
         self.rect.x = self.__initial_position[0]
         self.rect.y = self.__initial_position[1]
 	
+    def restart(self):
+
+        self.initial_position()
+        self.lifes = 3
+
     def die(self):
         """
         Assim que a nave é atingida esse método é chamado para realizar as devidas
-        ações que são necessárias. 
+        ações que são dnecessárias. 
         As ações são: reproduzir o som de explosão definido na construção do objeto,
         retornar a nave à posição inicial e reduzir a sua quantidade de vidas.
         """
@@ -269,7 +274,7 @@ class SpaceInvaders():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     x, y = pygame.mouse.get_pos()
                     if ((x >= 232) and (y >= 480)) and ((x <= 570) and (y <= 520)):
-                        self.iniciar_jogo()
+                        self.start_game()
                         music_menu.stop()
                         return True
 
@@ -321,13 +326,15 @@ class SpaceInvaders():
             
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
-                        self.iniciar_jogo()
+                        music_menu.stop()
+                        self.start_game()
                         return
 						
                     if event.key == pygame.K_ESCAPE:
+                        music_menu.stop()
                         pygame.quit()
                         exit()
-
+        
 
     def start_game(self):
         """
@@ -338,7 +345,7 @@ class SpaceInvaders():
         self.invader_shot.empty()
         self.ship_shot.empty()
         self.create_invaders()
-        self.ship.initial_position()
+        self.ship.restart()
         self.update()
 	
     def create_invaders(self):
