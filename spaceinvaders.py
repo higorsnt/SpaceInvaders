@@ -252,7 +252,7 @@ class SpaceInvaders():
         music_menu = pygame.mixer.Sound(DIRECTORY + "/sounds/menu.wav")
         music_menu.play(-1)
 
-        self.window.fill(BLACK)
+        self.window.blit(self.background, (0,0))
         text = self.font.render("SPACE INVADERS", True, GREEN)
         self.window.blit(text, [(SCREEN_WIDTH - 550) / 2, 0])
         self.font = pygame.font.Font(DIRECTORY + "/fonts/space_invaders.ttf", 30)
@@ -300,8 +300,7 @@ class SpaceInvaders():
         music_menu = pygame.mixer.Sound(DIRECTORY + "/sounds/menu.wav")
         music_menu.play(-1)
 
-        self.window.fill(BLACK)
-
+        self.window.blit(self.background, (0,0))
         text1 = self.font.render(" GAME OVER ", True, GREEN)
         text2 = self.font.render("FINAL SCORE: %d" % self.score, True, GREEN)
         text1_rect = text1.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 500))
