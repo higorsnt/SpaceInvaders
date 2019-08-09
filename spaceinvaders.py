@@ -64,10 +64,15 @@ class Ship(pygame.sprite.Sprite):
         self.rect.x = self.__initial_position[0]
         self.rect.y = self.__initial_position[1]
 	
+    def restart(self):
+
+        self.initial_position()
+        self.lifes = 3
+
     def die(self):
         """
         Assim que a nave é atingida esse método é chamado para realizar as devidas
-        ações que são necessárias. 
+        ações que são dnecessárias. 
         As ações são: reproduzir o som de explosão definido na construção do objeto,
         retornar a nave à posição inicial e reduzir a sua quantidade de vidas.
         """
@@ -230,8 +235,8 @@ class SpaceInvaders():
 
         self.background = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
         self.lifes_image = pygame.transform.scale(lifes_image, (25, 25))
-        self.explosion_image = pygame.transform.scale(explosion_image, ((SCREEN_WIDTH / 20), (SCREEN_WIDTH / 20)))
-        self.ship = Ship(path_image_ship, (SCREEN_WIDTH) / 2, (SCREEN_HEIGHT - 110))
+        self.explosion_image = pygame.transform.scale(explosion_image, ((SCREEN_WIDTH // 20), (SCREEN_WIDTH // 20)))
+        self.ship = Ship(path_image_ship, (SCREEN_WIDTH) // 2, (SCREEN_HEIGHT - 110))
         self.clock = pygame.time.Clock()
         self.invaders = pygame.sprite.OrderedUpdates()
         self.invaders_direction = 1
@@ -249,12 +254,12 @@ class SpaceInvaders():
 
         self.window.fill(BLACK)
         text = self.font.render("SPACE INVADERS", True, GREEN)
-        self.window.blit(text, [(SCREEN_WIDTH - 550) / 2, 0])
+        self.window.blit(text, [(SCREEN_WIDTH - 550) // 2, 0])
         self.font = pygame.font.Font(DIRECTORY + "/fonts/space_invaders.ttf", 30)
-        command1 = self.font.render(" ENTER or I: INICIA ", True, WHITE, BLUE)
+        command1 = self.font.render(" ENTER or I: START ", True, WHITE, BLUE)
         command2 = self.font.render("   ESC or S:    OUT      ", True, WHITE, BLUE)
-        command1_rect = command1.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 100))
-        command2_rect = command2.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 50))
+        command1_rect = command1.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 100))
+        command2_rect = command2.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 50))
         self.window.blit(command1, command1_rect)
         self.window.blit(command2, command2_rect)
         
@@ -269,7 +274,7 @@ class SpaceInvaders():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     x, y = pygame.mouse.get_pos()
                     if ((x >= 232) and (y >= 480)) and ((x <= 570) and (y <= 520)):
-                        self.iniciar_jogo()
+                        self.start_game()
                         music_menu.stop()
                         return True
 
@@ -299,15 +304,15 @@ class SpaceInvaders():
 
         text1 = self.font.render(" GAME OVER ", True, GREEN)
         text2 = self.font.render("FINAL SCORE: %d" % self.score, True, GREEN)
-        text1_rect = text1.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 500))
-        text2_rect = text2.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT - 300))
+        text1_rect = text1.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 500))
+        text2_rect = text2.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT - 300))
         self.window.blit(text1, text1_rect)
         self.window.blit(text2, text2_rect)
         
         text3 = self.font.render("PRESS ENTER TO TRY AGAIN", True, GREEN)
         text4 = self.font.render("PRESS ESC TO OUT", True, GREEN)
-        text3_rect = text3.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT - 100))
-        text4_rect = text4.get_rect(center=((SCREEN_WIDTH) / 2, SCREEN_HEIGHT - 40))
+        text3_rect = text3.get_rect(center=((SCREEN_WIDTH) // 2, SCREEN_HEIGHT - 100))
+        text4_rect = text4.get_rect(center=((SCREEN_WIDTH) // 2, SCREEN_HEIGHT - 40))
         self.window.blit(text3, text3_rect)
         self.window.blit(text4, text4_rect)
         pygame.display.update()
@@ -321,13 +326,15 @@ class SpaceInvaders():
             
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
-                        self.iniciar_jogo()
+                        music_menu.stop()
+                        self.start_game()
                         return
 						
                     if event.key == pygame.K_ESCAPE:
+                        music_menu.stop()
                         pygame.quit()
                         exit()
-
+        
 
     def start_game(self):
         """
@@ -338,7 +345,7 @@ class SpaceInvaders():
         self.invader_shot.empty()
         self.ship_shot.empty()
         self.create_invaders()
-        self.ship.initial_position()
+        self.ship.restart()
         self.update()
 	
     def create_invaders(self):
@@ -356,7 +363,7 @@ class SpaceInvaders():
         for j in range(9):
             y = 15
             for i in range(5):
-                sprite = pygame.transform.scale(enemy_types[i], ((SCREEN_WIDTH / 20), (SCREEN_WIDTH / 20)))
+                sprite = pygame.transform.scale(enemy_types[i], ((SCREEN_WIDTH // 20), (SCREEN_WIDTH // 20)))
                 self.invaders.add(Invader(sprite, x, y))
                 y += 45
             x += 55
