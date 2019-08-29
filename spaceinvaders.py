@@ -14,6 +14,7 @@ WHITE = (255, 255, 255)
 RED   = (255, 0, 0)
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
+GRAY =  (54, 54, 54)
 
 
 ####     TELA     ####
@@ -25,13 +26,35 @@ SCREEN_HEIGHT = 600
 # Comando para pegar o caminho onde a pasta do jogo está
 DIRECTORY = os.getcwd()
 
+class Edge(pygame.sprite.Sprite):
+    """
+    Estrutura criada para facilitar a análise de colisões com as bordas
+    """
+    def __init__(self, x, y, a, b):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((x, y))
+        self.image.fill(WHITE)
+        self.rect = self.image.get_rect()
+        self.rect.x = a
+        self.rect.y = b
+
+
+class Block(pygame.sprite.Sprite):
+
+    def __init__(self, color = WHITE, size = 10):
+        pygame.sprite.Sprite.__init__(self)
+        self.color = color
+        self.size = size
+        self.image = pygame.Surface([self.size, self.size])
+        self.image.fill(color)
+        self.rect = self.image.get_rect()
 
 class Ship(pygame.sprite.Sprite):
     """
     Classe que representa a nave do jogador.
     """
     
-    def __init__(self, path, pos_x, pos_y, speed=5):
+    def __init__(self, path, pos_x, pos_y, speed = 5):
         """
         Cria uma nave.
         
@@ -221,8 +244,10 @@ class SpaceInvaders():
         # Coloca um ícone na janela
         pygame.display.set_icon(logo)
         self.score = 0
-        '''Criando um objeto do tipo pygame.font.Font, onde é passada a fonte e o tamanho
-           se a fonte for passada como None é utilizada a padrão do sistema.'''
+        '''
+        Criando um objeto do tipo pygame.font.Font, onde é passada a fonte e o tamanho
+        se a fonte for passada como None é utilizada a padrão do sistema.
+        '''
         self.font = pygame.font.Font(DIRECTORY + "/fonts/space_invaders.ttf", 60)
         self.score_font = pygame.font.Font(DIRECTORY + "/fonts/space_invaders.ttf", 15)
         self.explosion_sound = pygame.mixer.Sound(DIRECTORY + "/sounds/invaderkilled.wav")
@@ -240,8 +265,13 @@ class SpaceInvaders():
         self.clock = pygame.time.Clock()
         self.invaders = pygame.sprite.OrderedUpdates()
         self.invaders_direction = 1
+        
+        self.left_edge = pygame.sprite.GroupSingle(Edge(5, SCREEN_HEIGHT, 0, 0))
+        self.right_edge = pygame.sprite.GroupSingle(Edge(5, SCREEN_HEIGHT, 795, 0))
+        self.bottom_edge = pygame.sprite.GroupSingle(Edge(SCREEN_WIDTH, 5, 0, 560))
 
-        self.grupos = pygame.sprite.Group(self.ship_shot, self.invader_shot, self.invaders)
+        self.blocks = pygame.sprite.Group()
+        self.groups = pygame.sprite.Group(self.ship_shot, self.invader_shot, self.invaders)
 
     def home_screen(self):
         """
@@ -316,7 +346,7 @@ class SpaceInvaders():
         self.window.blit(text3, text3_rect)
         self.window.blit(text4, text4_rect)
         pygame.display.update()
- 
+
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -344,10 +374,22 @@ class SpaceInvaders():
         self.invaders.empty()
         self.invader_shot.empty()
         self.ship_shot.empty()
+        self.blocks.empty()
         self.create_invaders()
         self.ship.restart()
+        self.build_blocks()
         self.update()
 	
+    def build_blocks(self):
+        number = 0
+        for row in range(4):
+            blocker = Block()
+            for column in range(9):
+                blocker.rect.x = 50 + (200 * number) + (column * blocker.size)
+                blocker.rect.y = 450 + (row * blocker.size)
+            self.blocks.add(blocker)
+            number += 1
+
     def create_invaders(self):
         """
         Cria os invasores e coloca todos em um grupo.
@@ -396,42 +438,46 @@ class SpaceInvaders():
         score = self.score_font.render("SCORE: %d" % self.score, True, WHITE)
         self.window.blit(self.background, (0, 0))
         self.window.blit(score, (SCREEN_WIDTH - 150, SCREEN_HEIGHT - 30))
-        pygame.draw.rect(self.window, WHITE, [0, 0, 5, SCREEN_HEIGHT])
-        pygame.draw.rect(self.window, WHITE, [795, 0, 5, SCREEN_HEIGHT])
-        pygame.draw.rect(self.window, WHITE, [0, 560, SCREEN_WIDTH, 5])
+
+        self.left_edge.draw(self.window)
+        self.right_edge.draw(self.window)
+        self.bottom_edge.draw(self.window)
         
 
-        self.grupos.draw(self.window)
+        self.groups.draw(self.window)
+        self.blocks.draw(self.window)
         self.window.blit(self.ship.image, self.ship.rect)
         self.ship.update()
 
         if pygame.time.get_ticks() % 2000.0 < 20:
             self.enemy_shot()
         
-        
-        self.grupos.update(self.invaders_direction)
+        self.groups.update(self.invaders_direction)
         self.update_direction()
-       
-       
+
+        self.check_collisions()
+        self.showShipLives()
+
+        self.groups = pygame.sprite.Group(self.ship_shot, self.invader_shot, self.invaders)
+        self.clock.tick(60)
+        pygame.display.update()
+    
+    def check_collisions(self):
         if pygame.sprite.groupcollide(self.ship_shot, self.invader_shot, True, True):
             self.score += randint(4, 20)
-
-        if pygame.sprite.spritecollide(self.ship, self.invader_shot, True):
-            self.explosion_sound.play()
-            self.window.blit(self.explosion_image, (self.ship.rect.x, self.ship.rect.y))
-            self.ship.die()
         
-        self.showShipLives()
-            
+        pygame.sprite.groupcollide(self.invader_shot, self.bottom_edge, True, False)
+
         for atingidos in pygame.sprite.groupcollide(self.ship_shot, self.invaders, True, True).values():
             for invasor in atingidos:
                 self.explosion_sound.play()
                 self.window.blit(self.explosion_image, (invasor.rect.x, invasor.rect.y))
                 self.score += choice([10, 15, 20, 25, 30])
-
-        self.grupos = pygame.sprite.Group(self.ship_shot, self.invader_shot, self.invaders)
-        self.clock.tick(60)
-        pygame.display.update()
+        
+        if pygame.sprite.spritecollide(self.ship, self.invader_shot, True):
+            self.explosion_sound.play()
+            self.window.blit(self.explosion_image, (self.ship.rect.x, self.ship.rect.y))
+            self.ship.die()
 
     def update_direction(self):
         """
