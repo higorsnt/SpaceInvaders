@@ -131,7 +131,6 @@ class Ship(pygame.sprite.Sprite):
         Método que realiza a atualização da posição da nave à medida que o
         jogador a movimenta.
         """
-
         # Se estiver pressionando o botão da seta da direita
         if pygame.key.get_pressed()[pygame.K_RIGHT]:
             if self.rect.right < (SCREEN_WIDTH - self.speed):
@@ -145,9 +144,7 @@ class Ship(pygame.sprite.Sprite):
         """
         Representação textual do objeto, indicando a sua posição atual.
         """
-
         return "Ship in (%s, %s)" % (self.rect.x, self.rect.y)
-
 
 class Invader(pygame.sprite.Sprite):
     """
@@ -257,7 +254,7 @@ class SpaceInvaders():
         pygame.display.set_icon(logo)
         self.score = 0
         self.level = 0
-        self.speed = 1
+        self.speed = 0
         '''
         Criando um objeto do tipo pygame.font.Font, onde é passada a fonte e o tamanho
         se a fonte for passada como None é utilizada a padrão do sistema.
@@ -275,7 +272,6 @@ class SpaceInvaders():
         self.ship = pygame.sprite.GroupSingle(
                                 Ship(self.path_image_ship, (SCREEN_WIDTH) // 2, (SCREEN_HEIGHT - 110)))
         self.ship_sprite = self.ship.sprites()[0]
-
         self.background = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
         self.lifes_image = pygame.transform.scale(lifes_image, (25, 25))
         self.explosion_image = pygame.transform.scale(explosion_image, ((SCREEN_WIDTH // 20), (SCREEN_WIDTH // 20)))
@@ -305,8 +301,8 @@ class SpaceInvaders():
         command1_rect = command1.get_rect(center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 100))
         command2_rect = command2.get_rect(center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 50))
         
-        mothership = pygame.image.load(DIRECTORY + "/images/extras/boss1.png")
-        mothership = pygame.transform.scale(mothership, [150, 150])
+        mothership = pygame.image.load(DIRECTORY + "/images/boss1.png")
+        mothership = pygame.transform.scale(mothership, [110, 60])
         speed = [-5, 5]
         rect_mothership = mothership.get_rect()
 
@@ -403,7 +399,11 @@ class SpaceInvaders():
         Ela dura 1 segundo (1000 milisegundos).
         """
         self.level += 1
-        self.speed += 0.3 if (self.level >= 1 and self.level < 6) else 0
+        if (self.level > 1 and self.level < 6):
+            self.speed += 0.3
+        elif (self.level == 1):
+            self.speed += 1
+        
         font = pygame.font.Font(DIRECTORY + "/fonts/space_invaders.ttf", 100)
         text = font.render('LEVEL: ' + str(self.level), True, GOLD)
         time = pygame.time.get_ticks()
@@ -422,7 +422,6 @@ class SpaceInvaders():
         """
         Limpa todas as variáveis para que se possa iniciar o jogo.
         """
-
         self.groups.add(self.ship)
         self.invaders_direction = 1
         self.blocks = pygame.sprite.Group(self.build_blocks(0),
@@ -560,7 +559,7 @@ class SpaceInvaders():
                 self.score += choice([10, 15, 20, 25, 30, 35, 40])
         
         # Verifica a colisão dos disparos realizados pelos invasores e a nave. Apenas o tiro morre.
-        if pygame.sprite.groupcollide(self.ship, self.invader_shot, False, True):
+        if (pygame.sprite.groupcollide(self.ship, self.invader_shot, False, True)):
             self.explosion_sound.play()
             self.window.blit(self.explosion_image, (self.ship_sprite.rect.x, self.ship_sprite.rect.y))
             self.ship_sprite.die()
