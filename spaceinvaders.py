@@ -9,13 +9,12 @@ import os
 
 ####     Cores     ####
 #       (R, G, B)
-BLUE  = (0, 0, 255)
 WHITE = (255, 255, 255)
 RED   = (255, 0, 0)
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 GOLD = (255, 215, 0)
-AQUAMARINE = (127, 255, 212)
+SPRINGREEN = (0, 250, 154)
 
 
 ####     TELA     ####
@@ -26,6 +25,9 @@ SCREEN_HEIGHT = 600
 ####     DIRETÓRIO     ####
 # Comando para pegar o caminho onde a pasta do jogo está
 DIRECTORY = os.getcwd()
+
+####     FONTE     ####
+FONT = DIRECTORY + "/fonts/space_invaders.ttf"
 
 
 class Edge(pygame.sprite.Sprite):
@@ -123,7 +125,7 @@ class Ship(pygame.sprite.Sprite):
         Ao ser chamado é liberado o som de tiro e criado um projétil.
         """
         self.__sound_shot.play()
-        bullet = Bullet(self.rect.midtop, 1, AQUAMARINE)
+        bullet = Bullet(self.rect.midtop, 1)
         return bullet
 
     def update(self, *args):
@@ -171,7 +173,7 @@ class Invader(pygame.sprite.Sprite):
         """
         Metódo que permite cada invasor disparar.
         """
-        bullet = Bullet(self.rect.midtop, -1, speed=4, color=GOLD)
+        bullet = Bullet(self.rect.midtop, -1, speed = 4, color = RED)
         return bullet
     
     def up_speed(self):
@@ -199,12 +201,34 @@ class Invader(pygame.sprite.Sprite):
         return "Invader in (%s, %s)" % (self.rect.x, self.rect.y)
 
 
+class Mothership(pygame.sprite.Sprite):
+
+    def __init__(self, sprite, pos_x, pos_y, speed = 2.7):
+        """
+        Método responsável por criar a nave-mãe.
+
+        sprite: imagem que representa a nave.
+        pos_x: posição inicial da nave no eixo x.
+        pos_y: posição inicial da nave no eixo y.
+        speed: velocidade em que a nave se movimenta.
+        """
+        pygame.sprite.Sprite.__init__(self)
+        self.image = sprite
+        self.rect = self.image.get_rect(topleft = (pos_x, pos_y))
+        self.speed = speed
+    
+    def update(self, *args):
+        if (self.rect.x >= (SCREEN_WIDTH + 200)):
+            self.kill()
+        else:
+            self.rect = self.rect.move(self.speed, 0)
+
 class Bullet(pygame.sprite.Sprite):
     """
     Classe que representa as balas de todos os objetos que realizam disparos.
     """
 
-    def __init__(self, pos_xy, direction, color = AQUAMARINE, speed = 8):
+    def __init__(self, pos_xy, direction, color = SPRINGREEN, speed = 8):
         """
         Constrói um objeto do tipo Bullet.
 
@@ -259,8 +283,8 @@ class SpaceInvaders():
         Criando um objeto do tipo pygame.font.Font, onde é passada a fonte e o tamanho
         se a fonte for passada como None é utilizada a padrão do sistema.
         '''
-        self.font = pygame.font.Font(DIRECTORY + "/fonts/space_invaders.ttf", 60)
-        self.score_font = pygame.font.Font(DIRECTORY + "/fonts/space_invaders.ttf", 15)
+        self.font = self.create_font(60)
+        self.score_font = self.create_font(15)
         self.explosion_sound = pygame.mixer.Sound(DIRECTORY + "/sounds/invaderkilled.wav")
         
         # Carregando imagens necessárias
@@ -270,11 +294,17 @@ class SpaceInvaders():
         lifes_image = pygame.image.load(DIRECTORY + "/images/heart.png")
 
         self.ship = pygame.sprite.GroupSingle(
-                                Ship(self.path_image_ship, (SCREEN_WIDTH) // 2, (SCREEN_HEIGHT - 110)))
+                                Ship(self.path_image_ship, (SCREEN_WIDTH - 50) // 2, 
+                                        (SCREEN_HEIGHT - 110)))
         self.ship_sprite = self.ship.sprites()[0]
+        mothership_image = pygame.image.load(DIRECTORY + "/images/boss3.png")
+        self.mothership_image = pygame.transform.scale(mothership_image, [71, 39])
+        self.mothership = pygame.sprite.GroupSingle(
+                                Mothership(self.mothership_image, self.random_position(), 15))
         self.background = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
         self.lifes_image = pygame.transform.scale(lifes_image, (25, 25))
-        self.explosion_image = pygame.transform.scale(explosion_image, ((SCREEN_WIDTH // 20), (SCREEN_WIDTH // 20)))
+        self.explosion_image = pygame.transform.scale(explosion_image, (
+                                    (SCREEN_WIDTH // 20), (SCREEN_WIDTH // 20)))
         self.clock = pygame.time.Clock()
         self.invaders = pygame.sprite.OrderedUpdates()
         self.invaders_direction = 1
@@ -283,19 +313,26 @@ class SpaceInvaders():
         self.left_edge = pygame.sprite.GroupSingle(Edge(5, SCREEN_HEIGHT, 0, 0))
         self.right_edge = pygame.sprite.GroupSingle(Edge(5, SCREEN_HEIGHT, 795, 0))
         self.bottom_edge = pygame.sprite.GroupSingle(Edge(SCREEN_WIDTH, 5, 0, 560))
-        self.groups = pygame.sprite.Group(self.ship_shot, self.invader_shot, self.invaders)
+        self.groups = pygame.sprite.Group(self.ship_shot, self.invader_shot, 
+                                    self.invaders, self.mothership)
 
+    def random_position(self):
+        """
+        Escolhe aleatoriamente uma posição inicial no eixo x
+        para a nave-mãe.
+        """
+        return choice([-1700, -1900, -2200, -2500, -1500])
 
     def home_screen(self):
         """
-        Cria a tela inicial do jogo
+        Cria a tela inicial do jogo.
         """
         menu = True
         music_menu = pygame.mixer.Sound(DIRECTORY + "/sounds/menu.wav")
         music_menu.play(-1)
 
         text = self.font.render("SPACE INVADERS", True, GREEN)
-        self.font = pygame.font.Font(DIRECTORY + "/fonts/space_invaders.ttf", 20)
+        self.font = self.create_font(20)
         command1 = self.font.render(" ENTER or I: START ", True, WHITE, None)
         command2 = self.font.render("   ESC or S:    OUT      ", True, WHITE, None)
         command1_rect = command1.get_rect(center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 100))
@@ -313,6 +350,7 @@ class SpaceInvaders():
         pygame.display.update()
 
         while menu:
+            # Mudando a direção que a nave se movimenta.
             if rect_mothership.left < 0 or rect_mothership.right > SCREEN_WIDTH:
                 speed[0] = -speed[0]
             if rect_mothership.top < 0 or rect_mothership.bottom > SCREEN_HEIGHT:
@@ -350,24 +388,23 @@ class SpaceInvaders():
         """
         music_menu = pygame.mixer.Sound(DIRECTORY + "/sounds/menu.wav")
         music_menu.play(-1)
+        self.game_over_screen()
 
-        self.font = pygame.font.Font(DIRECTORY + "/fonts/space_invaders.ttf", 35)
+        self.font50 = self.create_font(50)
+        self.font20 = self.create_font(20)
 
-        text1 = self.font.render(" GAME OVER ", True, GREEN)
-        text2 = self.font.render("FINAL SCORE: %d" % self.score, True, GREEN)
-        text3 = self.font.render("PRESS ENTER TO TRY AGAIN", True, GREEN)
-        text4 = self.font.render("PRESS ESC TO OUT", True, GREEN)
+        text1 = self.font50.render("FINAL SCORE: %d" % self.score, True, GOLD)
+        text2 = self.font20.render("PRESS ENTER TO TRY AGAIN", True, WHITE)
+        text3 = self.font20.render("PRESS ESC TO OUT", True, WHITE)
 
-        text1_rect = text1.get_rect(center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 500))
-        text2_rect = text2.get_rect(center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 300))
-        text3_rect = text3.get_rect(center = ((SCREEN_WIDTH) // 2, SCREEN_HEIGHT - 100))
-        text4_rect = text4.get_rect(center = ((SCREEN_WIDTH) // 2, SCREEN_HEIGHT - 40))
+        text1_rect = text1.get_rect(center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 350))
+        text2_rect = text2.get_rect(center = ((SCREEN_WIDTH) // 2, SCREEN_HEIGHT - 100))
+        text3_rect = text3.get_rect(center = ((SCREEN_WIDTH) // 2, SCREEN_HEIGHT - 40))
 
         self.window.fill(BLACK)
         self.window.blit(text1, text1_rect)
         self.window.blit(text2, text2_rect)
         self.window.blit(text3, text3_rect)
-        self.window.blit(text4, text4_rect)
         pygame.display.update()
 
         while True:
@@ -404,18 +441,37 @@ class SpaceInvaders():
         elif (self.level == 1):
             self.speed += 1
         
-        font = pygame.font.Font(DIRECTORY + "/fonts/space_invaders.ttf", 100)
+        font = self.create_font(100)
         text = font.render('LEVEL: ' + str(self.level), True, GOLD)
-        time = pygame.time.get_ticks()
+        self.time = pygame.time.get_ticks()
 
-        while ((pygame.time.get_ticks() - time) < 1000):
+        while ((pygame.time.get_ticks() - self.time) < 1000):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     exit()
 
-            self.window.fill(BLACK)
+            self.window.blit(self.background, [0, 0])
             self.window.blit(text, [(SCREEN_WIDTH - 450) // 2, 220])
+            pygame.display.update()
+    
+    def game_over_screen(self):
+        """
+        Cria a tela de game over.
+        Ela dura 1.5 segundo (1500 milisegundos).
+        """
+        font = self.create_font(100)
+        text = font.render('GAME OVER', True, RED)
+        time = pygame.time.get_ticks()
+
+        while ((pygame.time.get_ticks() - time) < 1500):
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+
+            self.window.blit(self.background, [0, 0])
+            self.window.blit(text, [(SCREEN_WIDTH - 630) // 2, 220])
             pygame.display.update()
 
     def start_game(self):
@@ -426,9 +482,9 @@ class SpaceInvaders():
         self.invaders_direction = 1
         self.blocks = pygame.sprite.Group(self.build_blocks(0),
                                             self.build_blocks(1),
-                                            self.build_blocks(2),
-                                            self.build_blocks(3))
+                                            self.build_blocks(2))
         self.invaders.empty()
+        self.mothership.empty()
         self.invader_shot.empty()
         self.ship_shot.empty()
         self.level_screen()
@@ -447,10 +503,10 @@ class SpaceInvaders():
         """
         aux = pygame.sprite.Group()
         for row in range(5):
-            for column in range(10):
+            for column in range(11):
                 blocker = Block()
-                blocker.rect.x = 50 + (200 * number) + (column * blocker.size)
-                blocker.rect.y = 380 + (row * blocker.size)
+                blocker.rect.x = 45 + (300 * number) + (column * blocker.size)
+                blocker.rect.y = 400 + (row * blocker.size)
                 aux.add(blocker)
         return aux
 
@@ -467,13 +523,13 @@ class SpaceInvaders():
 
         # Preenchendo os invasores pelas colunas.
         for j in range(7):
-            y = 15
+            y = 60
             for i in range(5):
                 sprite = pygame.transform.scale(enemy_types[i], 
                                 ((SCREEN_WIDTH // 20), (SCREEN_WIDTH // 20)))
                 self.invaders.add(Invader(sprite, x, y, self.speed))
-                y += 50
-            x += 60
+                y += 45
+            x += 62
 
     def showShipLives(self):
         """
@@ -500,23 +556,26 @@ class SpaceInvaders():
         """
         score = self.score_font.render("SCORE: %d" % self.score, True, WHITE)
 
-        self.window.blit(self.background, (0, 0))
+        current_time = pygame.time.get_ticks()
+
+        if (current_time % 2000.0 < 20):
+            self.enemy_shot()
+        
+        if ((len(self.mothership) == 0)):
+            self.mothership.add(Mothership(self.mothership_image, self.random_position(), 15))
+
+        self.window.blit(self.background, [0, 0])
         self.window.blit(score, (SCREEN_WIDTH - 150, SCREEN_HEIGHT - 30))
         self.groups.draw(self.window)
         self.blocks.draw(self.window)
-
-        current_time = pygame.time.get_ticks()
-
-        if current_time % 2000.0 < 20:
-            self.enemy_shot()
 
         self.groups.update(self.invaders_direction)
         self.update_direction()
         self.check_collisions()
         self.showShipLives()
 
-        self.groups = pygame.sprite.Group(self.ship, self.ship_shot, self.invader_shot, 
-                                    self.invaders, self.left_edge, self.bottom_edge, self.right_edge)
+        self.groups = pygame.sprite.Group(self.ship, self.ship_shot, self.invader_shot, self.invaders, 
+                                    self.left_edge, self.bottom_edge, self.right_edge, self.mothership)
         self.clock.tick(60)
         pygame.display.update()
     
@@ -546,6 +605,11 @@ class SpaceInvaders():
         # Colisão entre a nave e os invasores
         if pygame.sprite.groupcollide(self.ship, self.invaders, False, False):
             self.ship_sprite.die()
+        
+        # Colisão entre a nave-mãe e o tiro da nave. A pontuação será um valor entre 25 e 55.
+        if pygame.sprite.groupcollide(self.mothership, self.ship_shot, True, True):
+            self.score += choice([25, 35, 45, 55])
+            self.explosion_sound.play()
         
         '''
         Colisão entre os disparos da nave e os invasores, ambos morrem.
@@ -577,7 +641,9 @@ class SpaceInvaders():
         
         if ((last.rect.x > (SCREEN_WIDTH - last.rect.width)) or (first.rect.x < 0)):
             self.invaders_direction *= -1
-            self.down_invader(arr)
+            current_time = pygame.time.get_ticks()
+            if (current_time - self.time > (8000 // self.speed)):
+                self.down_invader(arr)
     
     def down_invader(self, arr):
         """
@@ -589,6 +655,9 @@ class SpaceInvaders():
             if up_speed:
                 enemy.up_speed()
             enemy.down_invader()
+
+    def create_font(self, size):
+        return pygame.font.Font(FONT, size)
 
     def main(self):
         """
@@ -619,6 +688,8 @@ class SpaceInvaders():
                         if event.type == pygame.QUIT:
                             run, menu = False, False
                         if event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_ESCAPE:
+                                run, menu = False, False
                             if ((event.key == pygame.K_UP or event.key == pygame.K_SPACE) and not self.ship_shot):
                                 self.ship_shot.add(self.ship_sprite.shoot())
 
