@@ -502,8 +502,8 @@ class SpaceInvaders():
                 que ele será construído.
         """
         aux = pygame.sprite.Group()
-        for row in range(5):
-            for column in range(11):
+        for row in range(4):
+            for column in range(10):
                 blocker = Block()
                 blocker.rect.x = 45 + (300 * number) + (column * blocker.size)
                 blocker.rect.y = 400 + (row * blocker.size)

@@ -1,5 +1,8 @@
 # SPACE INVADERS 🛸
 
+[![Language](https://img.shields.io/badge/python-%3E=%202.7-blue?style=flat-square&logo=appveyor)](https://www.python.org)
+[![Modules](https://img.shields.io/badge/modules-pygame-green?style=flat-square&logo=appveyor)](https://www.pygame.org/docs/)
+
 **ALIENS ESTÃO INVADINDO A TERRA! :alien:**
 
 Calma, essa é apenas a temática que o jogo Space Invaders segue!  
@@ -9,31 +12,31 @@ O objetivo do jogo é destruir os aliens com a sua nave e dessa forma impedir qu
 
 ## Tópicos
 
-- [SPACE INVADERS 🛸](#space-invaders-%f0%9f%9b%b8)
-  - [Tópicos](#t%c3%b3picos)
+- [SPACE INVADERS 🛸](#space-invaders-%F0%9F%9B%B8)
+  - [Tópicos](#t%C3%B3picos)
     - [Eventos Essenciais em um jogo](#eventos-essenciais-em-um-jogo)
-    - [Pygame 🐍](#pygame-%f0%9f%90%8d)
+    - [Pygame 🐍](#pygame-%F0%9F%90%8D)
     - [Instalando o Pygame](#instalando-o-pygame)
     - [Executando o jogo](#executando-o-jogo)
-    - [Links Úteis](#links-%c3%9ateis)
+    - [Links Úteis](#links-%C3%BAteis)
     - [Autores](#autores)
 
 ### Eventos Essenciais em um jogo
 
 Para se construir um jogo é necessário ter conhecimento de quais eventos são importantes para se construir um jogo. Portanto, abaixo temos uma tabela com alguns desses eventos:
 
-|        Eventos                   |                           Explicação                                                 |
+|            Eventos               |                                  Explicação                                          |
 |:--------------------------------:|:------------------------------------------------------------------------------------:|
-|               Surface            |são as superfícies em 2D ou 3D onde se desenha o jogo, podendo preencher uma área com ||                                  |  uma cor ou mudar a cor da superfície dependendo da posição, e outros recursos como  ||                                  |   transparência.                                                                     |
-|               Display            |é o eventos para manipulação da tela do jogo, podendo atualizar o conteúdo da tela,   ||                                  |  retornar a superfície que representa a tela ou configurar o tamanho da tela.        |
+|               Surface            |              são as superfícies em _2D_ ou _3D_ onde se desenha o jogo.              |
+|               Display            | são os eventos que manipulam a tela, abrindo a possibilidade de atualizar ou configurar a tela, entre outras possibilidades.|
 |               draw               |                 são os desenhos na superfície.                                       |
-|               image              |        são as imagens, podendo ler ou gravar as imagens.                             |
+|               image              |        são as imagens. Elas permitem ler ou gravar alguma(s) imagem(s).              |
 |               event              |                    são os eventos do jogo.                                           |
 |               font               |                 utilizado para trabalhar com fontes.                                 |
-|               transform          |        pode rotacionar, espelhar, modificar ou cortar as superfícies do jogo.        |
-|               mixer              |                     trabalha com com os sons do jogo.                                |
+|               transform          |     permite rotacionar, espelhar, modificar ou cortar as imagens do jogo.            |
+|               mixer              |              facilita o trabalho com os sons no jogo.                                |
 |               Clock              |                     trabalha com o tempo dos quadros do jogo.                        |
-|               sprite             |é uma imagem bi-dimensional que faz parte de uma cena maior, isto                     ||                                  |é, os componentes que aparecem no jogo. Podendo se dividir em Sprite e Group, a classe||                                  |Group serve para agrupar vários Sprites.                                             |
+|               sprite             |é uma imagem que faz parte do jogo, isto é, são os componentes que aparecem no jogo. Podendo se dividir em Sprite e Group, a classe Group serve para agrupar várias sprites.|
 
 ### Pygame 🐍
 
@@ -45,7 +48,7 @@ Alguns módulos presentes em pygame são:
 |:--------------------------------:|:---------------------------------------------------------------:|
 |               cursors            |            carrega imagens de cursores como mouse.              |
 |               display            |             controla a exibição da janela ou tela.              |
-|                draw              |           desenha formas simpFuncionalidadeles sobre uma Surface.             |
+|                draw              |           desenha formas simples sobre uma Surface.             |
 |                event             |              controla eventos e fila de eventos.                |
 |                font              |                    cria e renderiza fontes.                     |
 |                image             |                    salva e carrega imagens.                     |
@@ -66,9 +69,9 @@ FONTE: [LINK](http://www.labtime.ufg.br/cgames/pdf/CProgPy_Pygame.pdf)
 
 ### Instalando o Pygame
 
-Inicialmente é necessário ter o Python instalado e o pip. Caso não tenha um dos dois instalados siga o passo a passo visto [aqui para Linux](https://python.org.br/instalacao-linux/) ou [aqui para Windows](https://python.org.br/instalacao-windows/).
+Inicialmente é necessário ter o Python instalado e o pip. Caso não tenha um dos dois instalados siga o passo a passo visto [aqui para Linux](https://python.org.br/instalacao-linux/) ou [aqui para Windows](https://python.org.br/instalacao-windows/) **e não se esqueça de adicionar Python na variável de ambiente!**.
 
-1. Para iniciar a instalação do Pygame, é recomendável estar com o pip atualizado, para isso faça _(esse passo pode ser pulado se você acabou de instalar o pip)_:
+1. Para iniciar a instalação do Pygame, é recomendável estar com o pip atualizado, para isso faça _(esse passo pode ser pulado se você já tem o pip instalado)_:
 
 ```
 $ pip install --user --upgrade pip 
@@ -99,14 +102,13 @@ $ cd SpaceInvaders
 Por fim, faça o seguinte comando:
 
 ```
-$ python game.py
+$ python spaceinvaders.py
 ```
 
-Em seguida deverá abrir a janela do jogo 😁
+Em seguida deverá abrir a janela do jogo 😁.
 
-<p align="center">
-    <img src="images/tela_inicial.png">
-</p>
+> TODO
+> COLOCAR GIF DA TELA
 
 ### Links Úteis
 
