@@ -6,37 +6,37 @@
 **ALIENS ESTÃO INVADINDO A TERRA! :alien:**
 
 Calma, essa é apenas a temática que o jogo Space Invaders segue!  
-Sendo originalmente lançado em 1978 pela [TAITO CORPORATION](https://www.taito.com/) e desenhado por Tomohiro Nishikado, posteriormente foi licenciado pela Midway. Este joguinho foi um dos primeiros da temática de tiro com gráfico bidimensional e que até hoje faz sucesso.  
+Sendo originalmente lançado em 1978 pela [TAITO CORPORATION](https://www.taito.com/) e desenhado por Tomohiro Nishikado, e depois licenciado pela Midway. Este joguinho foi um dos primeiros da temática de tiro com gráfico bidimensional e que até hoje faz sucesso.  
 
 O objetivo do jogo é destruir os aliens com a sua nave e dessa forma impedir que a invasão se concretize. Porém, não se pode dormir na direção, já que a qualquer momento os aliens podem te atingir e conseguir o que tanto querem: conquistar a Terra 🌎!
 
 ## Tópicos
 
-- [SPACE INVADERS 🛸](#space-invaders-%F0%9F%9B%B8)
-  - [Tópicos](#t%C3%B3picos)
+- [SPACE INVADERS 🛸](#space-invaders-%f0%9f%9b%b8)
+  - [Tópicos](#t%c3%b3picos)
     - [Eventos Essenciais em um jogo](#eventos-essenciais-em-um-jogo)
-    - [Pygame 🐍](#pygame-%F0%9F%90%8D)
+    - [Pygame 🐍](#pygame-%f0%9f%90%8d)
     - [Instalando o Pygame](#instalando-o-pygame)
     - [Executando o jogo](#executando-o-jogo)
-    - [Links Úteis](#links-%C3%BAteis)
+    - [Links Úteis](#links-%c3%9ateis)
     - [Autores](#autores)
 
 ### Eventos Essenciais em um jogo
 
-Para se construir um jogo é necessário ter conhecimento de quais eventos são importantes para se construir um jogo. Portanto, abaixo temos uma tabela com alguns desses eventos:
+Para se construir um jogo é necessário ter conhecimento de quais eventos são importantes para o mesmo. Portanto, abaixo temos uma tabela com alguns desses eventos:
 
 |            Eventos               |                                  Explicação                                          |
 |:--------------------------------:|:------------------------------------------------------------------------------------:|
-|               Surface            |              são as superfícies em _2D_ ou _3D_ onde se desenha o jogo.              |
+|               Surface            |              são as superfícies em _2D_ ou _3D_ onde se desenha o jogo.|
 |               Display            | são os eventos que manipulam a tela, abrindo a possibilidade de atualizar ou configurar a tela, entre outras possibilidades.|
-|               draw               |                 são os desenhos na superfície.                                       |
-|               image              |        são as imagens. Elas permitem ler ou gravar alguma(s) imagem(s).              |
-|               event              |                    são os eventos do jogo.                                           |
-|               font               |                 utilizado para trabalhar com fontes.                                 |
-|               transform          |     permite rotacionar, espelhar, modificar ou cortar as imagens do jogo.            |
-|               mixer              |              facilita o trabalho com os sons no jogo.                                |
-|               Clock              |                     trabalha com o tempo dos quadros do jogo.                        |
-|               sprite             |é uma imagem que faz parte do jogo, isto é, são os componentes que aparecem no jogo. Podendo se dividir em Sprite e Group, a classe Group serve para agrupar várias sprites.|
+|               draw               |                 são os desenhos na superfície.  |
+|               image              |        são as imagens. Elas permitem ler ou gravar a(s) imagem(s). |
+|               event              |                    são os eventos do jogo. |
+|               font               |                 utilizado para trabalhar com fontes. |
+|               transform          | permite rotacionar, espelhar, modificar ou cortar as imagens do jogo. |
+|               mixer              |       facilita o trabalho com os sons no jogo. |
+|               Clock              |                     trabalha com o tempo dos quadros do jogo.  |
+|               sprite             |é uma imagem que faz parte do jogo, isto é, são os componentes que aparecem no jogo. Podendo se dividir em Sprite e Group (a classe Group serve para agrupar várias sprites).|
 
 ### Pygame 🐍
 
