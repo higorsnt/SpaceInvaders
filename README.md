@@ -5,19 +5,24 @@
 
 **ALIENS ESTÃO INVADINDO A TERRA! :alien:**
 
-Calma, essa é apenas a temática que o jogo Space Invaders segue!  
+Calma, essa é apenas a temática que do jogo Space Invaders!  
 Sendo originalmente lançado em 1978 pela [TAITO CORPORATION](https://www.taito.com/) e desenhado por Tomohiro Nishikado, e depois licenciado pela Midway. Este joguinho foi um dos primeiros da temática de tiro com gráfico bidimensional e que até hoje faz sucesso.  
 
 O objetivo do jogo é destruir os aliens com a sua nave e dessa forma impedir que a invasão se concretize. Porém, não se pode dormir na direção, já que a qualquer momento os aliens podem te atingir e conseguir o que tanto querem: conquistar a Terra 🌎!
+
+> TODO
+> COLOCAR GIF DA TELA
 
 ## Tópicos
 
 - [SPACE INVADERS 🛸](#space-invaders-%f0%9f%9b%b8)
   - [Tópicos](#t%c3%b3picos)
     - [Eventos Essenciais em um jogo](#eventos-essenciais-em-um-jogo)
-    - [Pygame 🐍](#pygame-%f0%9f%90%8d)
+    - [Pygame](#pygame)
     - [Instalando o Pygame](#instalando-o-pygame)
     - [Executando o jogo](#executando-o-jogo)
+    - [Detalhes da Construção do Jogo](#detalhes-da-constru%c3%a7%c3%a3o-do-jogo)
+    - [Comandos](#comandos)
     - [Links Úteis](#links-%c3%9ateis)
     - [Autores](#autores)
 
@@ -38,7 +43,7 @@ Para se construir um jogo é necessário ter conhecimento de quais eventos são 
 |               Clock              |                     trabalha com o tempo dos quadros do jogo.  |
 |               sprite             |é uma imagem que faz parte do jogo, isto é, são os componentes que aparecem no jogo. Podendo se dividir em Sprite e Group (a classe Group serve para agrupar várias sprites).|
 
-### Pygame 🐍
+### Pygame
 
 PyGame é um módulo<sup>[1](#footnote-1)</sup> usado na programação de jogos 2D, escrito utilizando C e Python. Ele pode ser executado em todas as principais plataformas e fornece ferramentas simples para gerenciar ambientes gráficos complexos, com movimentos e sons.  
 Alguns módulos presentes em pygame são:  
@@ -60,7 +65,7 @@ Alguns módulos presentes em pygame são:
 |               movie              |                executa filmes no formato mpeg.                  |
 |                time              |                     controla a temporização.                    |
 |             transform            |    permite redimensionar e mudar a orientação de imagens.       |
-|               cdrom              |    gerencia o dispositivo de cdrom e a execução do áudio.       |
+|               cdrom              |    gerencia o dispositivo de CD-ROM e a execução do áudio.      |
 |              sndarray            |                    manipula sons com NumPy.                     |
 |             surfarray            |                   manipula imagens com NumPy.                   |
 
@@ -107,12 +112,71 @@ $ python spaceinvaders.py
 
 Em seguida deverá abrir a janela do jogo 😁.
 
-> TODO
-> COLOCAR GIF DA TELA
+### Detalhes da Construção do Jogo
+
+Para a construção deste projeto foi necessário criar diversas classes com o objetivo de facilitar o tratamento de colisões, representação de entidades importantes para a jogabilidade, entre outros motivos. Algumas das classes criadas foram:
+
+<table style="text-align:center">
+  <tr>
+    <td>Edge</td>
+    <td>Estrutura criada para facilitar a análise de colisões com as bordas.</td>
+  </tr>
+  <tr>
+    <td>Block</td>
+    <td>Responsável por criar barreiras que protegem a nave.</td>
+  </tr>
+  <tr>
+    <td>Ship</td>
+    <td>Classe que representa a nave do jogador.</td>
+  </tr>
+  <tr>
+    <td>Invader</td>
+    <td>Classe que representa os invasores.</td>
+  </tr>
+  <tr>
+    <td>Mystery</td>
+    <td>É a representação da Mystery do jogo tradicional.</td>
+  </tr>
+  <tr>
+    <td>Bullet</td>
+    <td>Classe que representa as balas de todos os objetos que realizam disparos.</td>
+  </tr>
+  <tr>
+    <td>Bullet</td>
+    <td>Classe principal responsável por toda a lógica do jogo.</td>
+  </tr>
+</table>
+
+### Comandos
+
+Para realizar comandos no jogo é necessário apenas o uso teclado e a sua listagem está abaixo:
+
+<table style="text-align:center">
+  <tr>
+    <td>Iniciar o jogo</td>
+    <td><code>ENTER</code> ou <code>SPACE</code></td>
+  </tr>
+  <tr>
+    <td>Fechar ou Encerrar</td>
+    <td><code>ESC</code> ou clicar no ❌ da janela.</td>
+  </tr>
+  <tr>
+    <td>Movimentar a nave</td>
+    <td>Setas direcionais (⬅ e ➡)</td>
+  </tr>
+  <tr>
+    <td>Realizar disparo</td>
+    <td>Seta direcional (⬆) e <code>SPACE</code></td>
+  </tr>
+  <tr>
+    <td>Reiniciar o jogo (na tela de Game Over)</td>
+    <td><code>ENTER</code></td>
+  </tr>
+</table>
 
 ### Links Úteis
 
-* [Apresentação feita em sala de aula](https://docs.google.com/presentation/d/17zlx3HSecMyiAkZ4KWEEa_797A9hyfjCF2dA1NOeEss/edit?usp=sharing)
+* [Apresentação feita em sala de aula](#)
 * [A documentação oficial do Pygame é muito fácil de ser utilizada!](https://www.pygame.org/docs/)
 * [Esse material do curso realizado pela UFG!](http://www.labtime.ufg.br/cgames/pdf/CProgPy_Pygame.pdf)
 * [Repositório do Pygame no Github](https://github.com/pygame/pygame)
