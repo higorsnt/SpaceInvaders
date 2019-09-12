@@ -142,7 +142,7 @@ Para a construção deste projeto foi necessário criar diversas classes com o o
     <td>Classe que representa as balas de todos os objetos que realizam disparos.</td>
   </tr>
   <tr>
-    <td>Bullet</td>
+    <td>SpaceInvaders</td>
     <td>Classe principal responsável por toda a lógica do jogo.</td>
   </tr>
 </table>
