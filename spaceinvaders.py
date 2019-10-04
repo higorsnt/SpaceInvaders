@@ -273,6 +273,11 @@ class SpaceInvaders():
         # Definindo os caminhos dos arquivos necessários para o jogo
         self.ship_shot = pygame.sprite.GroupSingle()
         self.invader_shot = pygame.sprite.Group()
+
+        """
+        Para colocar em tela cheia usa o comando:
+            pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        """
         self.window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         # Coloca uma legenda para a janela
         pygame.display.set_caption("Space Invaders")
@@ -708,5 +713,6 @@ if __name__ == "__main__":
     pygame.mixer.init(22050, -16, 2, 1024)
     game = SpaceInvaders()
     game.main()
+    os.environ['SDL_VIDEO_CENTERED'] = '1'
     # Comando que encerra os módulos do Pygame
     pygame.quit()

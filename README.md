@@ -10,7 +10,7 @@ Sendo originalmente lançado em 1978 pela [TAITO CORPORATION](https://www.taito.
 
 O objetivo do jogo é destruir os aliens com a sua nave e dessa forma impedir que a invasão se concretize. Porém, não se pode dormir na direção, já que a qualquer momento os aliens podem te atingir e conseguir o que tanto querem: conquistar a Terra 🌎!
 
-> TODO
+> TODO  
 > COLOCAR GIF DA TELA
 
 ## Tópicos
@@ -185,10 +185,9 @@ Para realizar comandos no jogo é necessário apenas o uso teclado e a sua lista
     * [Matéria da página Medium que pode ajudar](https://medium.com/@nicolasbontempo/programando-python-orientado-a-objetos-d0069b2f1eb5)
     * [Material da UNESP - Campus de Ilha Solteira](https://www.dcc.ufrj.br/~fabiom/mab225/pythonoo.pdf)
  * Qual cor usar? [Acesse aqui!](http://www.erikasarti.com/html/tabela-cores/)
+  
+  
 
-</br>
-</br>
-</br>
 
 ### Autores
 
@@ -196,12 +195,11 @@ Código desenvolvido para auxiliar aos alunos da disciplina de Laboratório de P
 **Autores:**  
 * [Higor Santos](https://github.com/HigorSnt)  
 * [Mateus Alves](https://github.com/mateustranquilino)
-
-</br>
+  
+  
 
 <p align="center">
   <img src="http://alumni.computacao.ufcg.edu.br/static/logica/images/logo.png"/>
-</p>
 
 _________________________________________________
 1. <a name="footnote-1"></a> Módulos são arquivos que contêm definições e instruções de Python, ou seja, qualquer arquivo _.py_ é um módulo!
