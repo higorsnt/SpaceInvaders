@@ -10,8 +10,7 @@ Sendo originalmente lançado em 1978 pela [TAITO CORPORATION](https://www.taito.
 
 O objetivo do jogo é destruir os aliens com a sua nave e dessa forma impedir que a invasão se concretize. Porém, não se pode dormir na direção, já que a qualquer momento os aliens podem te atingir e conseguir o que tanto querem: conquistar a Terra 🌎!
 
-<p align="center">
-  <img src="images/telainicial.gif"/>
+![Tela de Jogo](images/telainicial.gif)
 
 ## Tópicos
 
