@@ -3,15 +3,15 @@
 [![Language](https://img.shields.io/badge/python-%3E=%202.7-blue?style=flat-square&logo=appveyor)](https://www.python.org)
 [![Modules](https://img.shields.io/badge/modules-pygame-green?style=flat-square&logo=appveyor)](https://www.pygame.org/docs/)
 
-**ALIENS ESTÃO INVADINDO A TERRA! :alien:**
+**ALIENS ESTÃO INVADINDO A TERRA!**
 
 Calma, essa é apenas a temática que do jogo Space Invaders!  
-Sendo originalmente lançado em 1978 pela [TAITO CORPORATION](https://www.taito.com/) e desenhado por Tomohiro Nishikado, e depois licenciado pela Midway. Este joguinho foi um dos primeiros da temática de tiro com gráfico bidimensional e que até hoje faz sucesso.  
+Sendo originalmente lançado em 1978 pela [TAITO CORPORATION](https://www.taito.com/) e desenhado por Tomohiro Nishikado, e depois licenciado pela Midway. Este joguinho foi um dos primeiros cuja temática era de tiro e que possuia gráficos bidimensionais. _O sucesso se estende até os dias atuais!_
 
 O objetivo do jogo é destruir os aliens com a sua nave e dessa forma impedir que a invasão se concretize. Porém, não se pode dormir na direção, já que a qualquer momento os aliens podem te atingir e conseguir o que tanto querem: conquistar a Terra 🌎!
 
-> TODO  
-> COLOCAR GIF DA TELA
+<p align="center">
+  <img src="images/telainicial.gif"/>
 
 ## Tópicos
 
@@ -35,12 +35,12 @@ Para se construir um jogo é necessário ter conhecimento de quais eventos são 
 |               Surface            |              são as superfícies em _2D_ ou _3D_ onde se desenha o jogo.|
 |               Display            | são os eventos que manipulam a tela, abrindo a possibilidade de atualizar ou configurar a tela, entre outras possibilidades.|
 |               draw               |                 são os desenhos na superfície.  |
-|               image              |        são as imagens. Elas permitem ler ou gravar a(s) imagem(s). |
+|               image              |        são as imagens. Este é o que possibilita a leitura ou gravação de imagem(ns). |
 |               event              |                    são os eventos do jogo. |
 |               font               |                 utilizado para trabalhar com fontes. |
 |               transform          | permite rotacionar, espelhar, modificar ou cortar as imagens do jogo. |
-|               mixer              |       facilita o trabalho com os sons no jogo. |
-|               Clock              |                     trabalha com o tempo dos quadros do jogo.  |
+|               mixer              |       facilita o trabalho com os sons no jogo.               |
+|               Clock              |       trabalha com o tempo dos quadros do jogo.              |
 |               sprite             |é uma imagem que faz parte do jogo, isto é, são os componentes que aparecem no jogo. Podendo se dividir em Sprite e Group (a classe Group serve para agrupar várias sprites).|
 
 ### Pygame
@@ -51,7 +51,7 @@ Alguns módulos presentes em pygame são:
 
 |            Módulo                |               Funcionalidade                                    |
 |:--------------------------------:|:---------------------------------------------------------------:|
-|               cursors            |            carrega imagens de cursores como mouse.              |
+|               cursors            |            carrega imagens de cursores, como mouse.              |
 |               display            |             controla a exibição da janela ou tela.              |
 |                draw              |           desenha formas simples sobre uma Surface.             |
 |                event             |              controla eventos e fila de eventos.                |
@@ -76,7 +76,7 @@ FONTE: [LINK](http://www.labtime.ufg.br/cgames/pdf/CProgPy_Pygame.pdf)
 
 Inicialmente é necessário ter o Python instalado e o pip. Caso não tenha um dos dois instalados siga o passo a passo visto [aqui para Linux](https://python.org.br/instalacao-linux/) ou [aqui para Windows](https://python.org.br/instalacao-windows/) **e não se esqueça de adicionar Python na variável de ambiente!**.
 
-1. Para iniciar a instalação do Pygame, é recomendável estar com o pip atualizado, para isso faça _(esse passo pode ser pulado se você já tem o pip instalado)_:
+1. Para iniciar a instalação do Pygame, é recomendável estar com o pip atualizado, para isso faça _(esse passo pode ser pulado se você acabou de instalá-lo)_:
 
 ```
 $ pip install --user --upgrade pip 
@@ -90,7 +90,7 @@ $ pip install --user pygame
 
 ### Executando o jogo
 
-Qualquer um pode baixar o código do jogo e executar clicando no botão verde **Clone or download** e pode baixar o código clicando em **Download ZIP** ou digitando no terminal o comando:
+Qualquer um pode baixar o código do jogo e executar clicando no botão verde **Clone or download** e pode baixar o código clicando [**aqui**](https://github.com/HigorSnt/SpaceInvaders/archive/master.zip) ou digitando no terminal o comando:
 
 ```
 $ git clone https://github.com/HigorSnt/SpaceInvaders.git
@@ -135,7 +135,7 @@ Para a construção deste projeto foi necessário criar diversas classes com o o
   </tr>
   <tr>
     <td>Mystery</td>
-    <td>É a representação da Mystery do jogo tradicional.</td>
+    <td>É a representação da nave Mystery presente no jogo tradicional.</td>
   </tr>
   <tr>
     <td>Bullet</td>
@@ -162,11 +162,11 @@ Para realizar comandos no jogo é necessário apenas o uso teclado e a sua lista
   </tr>
   <tr>
     <td>Movimentar a nave</td>
-    <td>Setas direcionais (⬅ e ➡)</td>
+    <td>Setas direcionais (⬅ ou ➡)</td>
   </tr>
   <tr>
     <td>Realizar disparo</td>
-    <td>Seta direcional (⬆) e <code>SPACE</code></td>
+    <td>Seta direcional (⬆) ou <code>SPACE</code></td>
   </tr>
   <tr>
     <td>Reiniciar o jogo (na tela de Game Over)</td>
@@ -201,5 +201,5 @@ Código desenvolvido para auxiliar aos alunos da disciplina de Laboratório de P
 <p align="center">
   <img src="http://alumni.computacao.ufcg.edu.br/static/logica/images/logo.png"/>
 
-_________________________________________________
+_________________________________________________  
 1. <a name="footnote-1"></a> Módulos são arquivos que contêm definições e instruções de Python, ou seja, qualquer arquivo _.py_ é um módulo!
