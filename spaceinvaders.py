@@ -282,7 +282,7 @@ class SpaceInvaders():
         # Coloca uma legenda para a janela
         pygame.display.set_caption("Space Invaders")
         # Coloca um ícone na janela
-        logo = pygame.image.load("images/logo.png")
+        logo = pygame.image.load(DIRECTORY + "/images/logo.png")
         pygame.display.set_icon(logo)
         self.score = 0
         self.level = 0
