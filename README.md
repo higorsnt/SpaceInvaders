@@ -195,7 +195,9 @@ Código desenvolvido para auxiliar aos alunos da disciplina de Laboratório de P
 * [Higor Santos](https://github.com/HigorSnt)  
 * [Mateus Alves](https://github.com/mateustranquilino)
   
-1. <a name="footnote-1"></a> Módulos são arquivos que contêm definições e instruções de Python, ou seja, qualquer arquivo _.py_ é um módulo!
 
 <p align="center">
   <img src="http://alumni.computacao.ufcg.edu.br/static/logica/images/logo.png"/>
+
+  
+1. <a name="footnote-1"></a> Módulos são arquivos que contêm definições e instruções de Python, ou seja, qualquer arquivo _.py_ é um módulo!
