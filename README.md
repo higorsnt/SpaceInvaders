@@ -175,7 +175,7 @@ Para realizar comandos no jogo é necessário apenas o uso teclado e a sua lista
 
 ### Links Úteis
 
-* [Apresentação feita em sala de aula](https://docs.google.com/presentation/d/17zlx3HSecMyiAkZ4KWEEa_797A9hyfjCF2dA1NOeEss/edit?usp=sharing)
+* [Apresentação feita em sala de aula](https://bit.ly/2XuTkxo)
 * [A documentação oficial do Pygame é muito fácil de ser utilizada!](https://www.pygame.org/docs/)
 * [Esse material do curso realizado pela UFG!](http://www.labtime.ufg.br/cgames/pdf/CProgPy_Pygame.pdf)
 * [Repositório do Pygame no Github](https://github.com/pygame/pygame)
